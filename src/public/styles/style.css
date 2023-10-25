@@ -25,7 +25,11 @@
 }
 
 /* declare root variables for dark theme */
-[data-theme="dark-simple"]{
+/* use data-theme attribute 
+or use class="dark-theme" 
+to switch to dark theme */
+
+[data-theme="dark-simple"], .dark-simple{
   --text-primary-color: #fff;
   --text-secondary-color: #3eb7ec;
   --bg-primary-color: #14264c;
@@ -38,7 +42,7 @@
 }
 
 /* declare root variables for dark theme */
-[data-theme="dark-christmas"]{
+[data-theme="dark-christmas"], .dark-christmas{
   --font-family-secondary: "Nunito", sans-serif;
   --text-primary-color: #fff;
   --text-secondary-color: #e5531a;

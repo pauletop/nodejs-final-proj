@@ -3,3 +3,52 @@
   padding: 0;
   box-sizing: border-box;
 }
+/* ref: https://lukelowrey.com/css-variable-theme-switcher/ */
+
+/* define css variables */
+
+/* declare root variables for light theme by default */
+:root{
+  /* fonts */
+  --font-family-primary: 'Alata', sans-serif;
+  --font-family-secondary: "DM Sans", sans-serif;
+  --text-primary-color: #14264c;
+  --text-secondary-color: #3eb7ec;
+  --bg-primary-color: #fff;
+  --bg-secondary-color: #EEFEFE;
+  --bg-light-color: #efefef;
+  --color-primary: #3eb7ec;
+  --color-secondary: #5df5f8;
+  --color-sup: #2adea1; /* support color */
+  --color-ter: #ff5e5e; /* red color for error */
+  --color-rare: #6db072; /* rare color */
+}
+
+/* declare root variables for dark theme */
+[data-theme="dark-simple"]{
+  --text-primary-color: #fff;
+  --text-secondary-color: #3eb7ec;
+  --bg-primary-color: #14264c;
+  --bg-secondary-color: #1c3d5a;
+  --bg-light-color: #1c3d5a;
+  --color-primary: #3eb7ec;
+  --color-secondary: #5df5f8;
+  --color-sup: #2adea1; /* support color */
+  --color-ter: #ff5e5e; /* red color for error */
+}
+
+/* declare root variables for dark theme */
+[data-theme="dark-christmas"]{
+  --font-family-secondary: "Nunito", sans-serif;
+  --text-primary-color: #fff;
+  --text-secondary-color: #e5531a;
+  --bg-primary-color: #02211e;
+  --bg-secondary-color: #043f39;
+  --bg-light-color: #0a5551;
+  --color-primary: #c4893f;
+  --color-secondary: #e5531a;
+  --color-sup: #ff472f;
+  --color-ter: #ff472f;
+  /* rare color */
+  --color-rare: #ffdf5c;
+}

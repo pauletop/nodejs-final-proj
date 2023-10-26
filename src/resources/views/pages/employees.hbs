@@ -1,0 +1,44 @@
+<h1>employees page</h1>
+<br>
+
+<h2>danh sách nhân viên:</h2>
+
+
+<table>
+    <thead>
+        <th>full name</th>
+        <th>email</th>
+        <th>role</th>
+    </thead>
+    <tbody>
+        {{#each employeeList}}
+            <tr>
+                <td>{{fullname}}</td>
+                <td>{{email}}</td>
+                <td>{{role}}</td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+
+
+<br><br><br><br>
+
+
+<div>
+    thêm nhân viên <br><br>
+
+    <form action="/employees" method="post">
+
+        <label for="fullname">full name</label><br>
+        <input type="fullname" id="fullname" name="fullname" required><br>
+
+        <label for="email">email</label><br>
+        <input type="email" id="email" name="email" required><br>
+
+        <br>
+        <button type="submit">thêm</button>
+
+    </form>
+</div>

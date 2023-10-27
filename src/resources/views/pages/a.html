@@ -1,0 +1,48 @@
+<p class=""></p>
+
+<script>
+    // to send a 1 minute link to the user
+    let mailcontent = {
+        "subject": "Reset Password",
+        "body": "Click on the link to reset your password",
+        "link": "http://localhost:8000/reset-password?token=" + token
+    }
+    axios.post('/api/send-mail', mailcontent)
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+    app.get('/reset-password/:tok', (req, res) => {
+        let token = req.query.token;
+        let currentTime = new Date().getTime();
+
+        // check if the token is valid
+        // if valid, send the reset password page
+        // else send the error page
+    })
+    let startTime = new Date().getTime();
+    let endTime = startTime + 60000;
+    sendMail = () => {
+        let currentTime = new Date().getTime();
+        if (currentTime < endTime) {
+            
+            
+        } else {
+            // delete the token
+        }
+    }
+    // to create a token from id object mongoose
+    let createToken = (id) => {
+        let token = crypto.randomBytes(32).toString('hex');
+        let hash = crypto.createHash('sha256').update(token).digest('hex');
+        let tokenObj = {
+            token: hash,
+            userId: id,
+            createdAt: new Date().getTime()
+        }
+        return tokenObj;
+    }
+</script>

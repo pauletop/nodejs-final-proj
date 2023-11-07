@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "lab06",
   "version": "1.0.0",
   "description": "",
@@ -8,12 +9,21 @@
     "watch": "node-sass --watch src/resources/scss/app.scss src/public/styles/style.css",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install"
+=======
+  "name": "nodejs-finalproject",
+  "version": "1.0.0",
+  "description": "Do an cuoi ki mon Phat trien ung dung web voi NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+>>>>>>> 64a5d9ebf841a5aaa2cd0d7538250f6bef1ca5bd
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "crypto": "^1.0.1",
     "express": "^4.18.2",
+<<<<<<< HEAD
     "express-handlebars": "^7.0.7",
     "mongoose": "^7.6.3",
     "morgan": "^1.10.0",
@@ -30,5 +40,8 @@
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
     "prettier": "3.0.3"
+=======
+    "nodemon": "^3.0.1"
+>>>>>>> 64a5d9ebf841a5aaa2cd0d7538250f6bef1ca5bd
   }
 }

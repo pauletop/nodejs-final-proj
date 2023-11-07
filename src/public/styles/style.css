@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+<<<<<<< HEAD
 /* ref: https://lukelowrey.com/css-variable-theme-switcher/ */
 
 /* define css variables */
@@ -257,3 +258,5 @@ section#head-navbar > nav{
     font-weight: 400;
   }
 }
+=======
+>>>>>>> e0e5090c42480b35e739bf101dad2b46bbe3f457

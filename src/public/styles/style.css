@@ -8,7 +8,7 @@
 /* define css variables */
 
 /* declare root variables for light theme by default */
-:root{
+:root,[data-theme="light"]{
   /* fonts */
   --font-family-primary: 'Alata', sans-serif;
   --font-family-secondary: "DM Sans", sans-serif;
@@ -22,6 +22,13 @@
   --color-sup: #2adea1; /* support color */
   --color-ter: #ff5e5e; /* red color for error */
   --color-rare: #6db072; /* rare color */
+  --theme-next: #14264c;
+  --bg-footer: #091228;
+  font-size: 18px;
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow: 0 10px 15px -3px #0000001a,0 4px 6px -4px #0000001a;
 }
 
 /* declare root variables for dark theme */
@@ -29,15 +36,18 @@
 or use class="dark-theme" 
 to switch to dark theme */
 [data-theme="dark-simple"], .dark-simple{
-  --text-primary-color: #fff;
+  --text-primary-color: #eee;
   --text-secondary-color: #3eb7ec;
   --bg-primary-color: #14264c;
+  --bg-primary-color: #111929;
   --bg-secondary-color: #1c3d5a;
   --bg-light-color: #1c3d5a;
   --color-primary: #3eb7ec;
   --color-secondary: #5df5f8;
   --color-sup: #2adea1; /* support color */
   --color-ter: #ff5e5e; /* red color for error */
+  --theme-next: #e5531a;
+  --bg-footer: #030a1d;
 }
 /* declare root variables for dark theme */
 [data-theme="dark-christmas"], .dark-christmas{
@@ -52,5 +62,198 @@ to switch to dark theme */
   --color-sup: #ff472f;
   --color-ter: #ff472f;
   /* rare color */
-  --color-rare: #ffdf5c;
+  --color-rare: #912729;
+  --theme-next: #ffdf5c;
+  --bg-footer: #01110f;
+}
+
+.font-head {
+  font-family: var(--font-family-primary);
+}
+.font-body{
+  font-family: var(--font-family-secondary);
+}
+.bg-normal{
+  background-color: var(--bg-primary-color);
+}
+.bg-presstige{
+  background-color: var(--bg-secondary-color);
+}
+.bg-extra{
+  background-color: var(--bg-light-color);
+}
+.presstige-color{
+  color: var(--text-secondary-color);
+}
+.text-pri-color{
+  color: var(--text-primary-color);
+}
+.pri-color {
+  color: var(--color-primary);
+}
+.sup-color{
+  color: var(--color-sup);
+}
+.ter-color{
+  color: var(--color-ter);
+}
+.rare-color{
+  color: var(--color-rare);
+}
+.text-align-justify{
+  text-align: justify;
+}
+.fs-1{
+  font-size: 1.5rem;
+}
+.fs-2{
+  font-size: 1.75rem;
+}
+
+.circle{
+  height: 2.5em;
+  width: 2.5em;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5em;
+  & > *{
+    font-size: 1.25em;
+    color: var(--bg-footer);
+  }
+  &:hover{
+    /* zoom animation in center */
+    height: 2.75em;
+    width: 2.75em;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    margin: 0.4em;
+  }
+}
+
+section#head-navbar > nav{
+  font-family: var(--font-family-primary)!important;
+  background-color: var(--bg-secondary-color);
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+#head-navbar .navbar-brand {
+  color: var(--text-secondary-color);
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  & > #nav-brand-name{
+    padding-left: 0.3em;
+    font-weight: 500;
+  }
+}
+
+#head-navbar .navbar-brand:hover{
+  opacity: 0.8;
+}
+
+#head-navbar .navbar-nav .active>.nav-link{
+  opacity: 1;
+  &:hover{
+    opacity: 0.9;
+  }
+}
+
+#head-navbar .navbar-nav .nav-link{
+  /* primary text color with 0.5 opa */
+  color: var(--text-primary-color);
+  opacity: 0.5;
+  &:hover{
+    opacity: 0.8;
+  }
+}
+
+.btn-toggle-mode, #head-navbar .btn-toggle-mode.btn:hover {
+  font-weight: 500;
+  text-decoration: none;
+  /* class body is dark */
+  color: var(--theme-next);
+  &:active{
+    opacity: 0.6;
+  }
+}
+
+.btn:focus{
+  outline: none;
+  box-shadow: none;
+  &.btn-pri-f{
+    box-shadow: var(--color-primary) 0px 0px 0px 2px;
+  }
+}
+
+.btn{
+  &.btn-pri-f{
+    background-color: var(--color-primary);
+    color: var(--text-primary-color);
+  }
+}
+
+
+
+#homepage-body{
+  /* @media (min-width: 992px)  {
+    min-height: calc(100vh - 62px);
+  } */
+  /* background-image: url(../../../../public/imgs/page_images/ip15s-unback.png); */
+  height: auto;
+  background-size: cover;
+
+
+}
+
+#bg-img-1 {
+  background-image: url(../../../../public/imgs/page_images/bg/1.png);
+  background-color: var(--bg-primary-color);
+  background-size: cover;
+  background-position: center;
+}
+
+.flex-wrap{
+  flex-wrap: wrap;
+}
+
+.gap-1{
+  gap: 2rem;
+}
+.gap-2{
+  gap: 3rem;
+}
+
+#footer{
+  background-color: var(--bg-footer);
+  color: #eee;
+  font-weight: 300;
+  padding: 5em 3em 2em;
+  & .long-slogan{
+    max-width: 525px;
+  }
+  & a {
+    color: inherit;
+    &:hover{
+      text-decoration: none;
+      opacity: 0.8;
+    }
+  }
+  & ul li {
+    cursor: pointer;
+    margin-top: 0.5rem;
+    &:hover{
+      opacity: 0.8;
+    }
+  }
+  & .cursor > * {
+    cursor: pointer;
+    font-weight: 400;
+  }
 }

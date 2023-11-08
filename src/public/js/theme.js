@@ -1,7 +1,7 @@
 const setColorSVG = (colorClass, parent) => {
   // get hex color from class pri-color
   let color = $(colorClass).css('color');
-  svg = $(`${parent} object`).contents().find('svg');
+  svg = $(`${parent}`).contents().find('svg');
   // set color to svg
   svg.attr('style', `color: ${color};`);
 };
@@ -25,6 +25,16 @@ $(document).ready(function () {
   document.documentElement.setAttribute('data-theme', storedTheme);
   $('.' + icons[modes.indexOf(storedTheme)]).toggleClass('d-none');
 
+  document.querySelector('#signoutBtn').addEventListener('click', (e) => {
+    localStorage.clear();
+    window.location.href = '/';
+  });
+
+  document.querySelector('#changePass').addEventListener('click', async (e) => {
+    e.preventDefault();
+    window.location.href = '/admin/p/update';
+  });
+
   toggle.onclick = function () {
     var currentTheme = document.documentElement.getAttribute('data-theme');
     let currentMode = modes.indexOf(currentTheme);
@@ -34,7 +44,7 @@ $(document).ready(function () {
 
     document.documentElement.setAttribute('data-theme', targetTheme);
     localStorage.setItem('theme', targetTheme);
-    setColorSVG('.pri-color', '#illustration');
+    setColorSVG('.pri-color', '#illustration object');
   };
 
   $('#theme-toggle').hover(

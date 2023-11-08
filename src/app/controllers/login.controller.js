@@ -1,74 +1,118 @@
-const usersModel = require('../models/users.model');
-const bcrypt = require("bcrypt");
+const userModel = require("../models/users.model");
+const bcrypt = require('bcrypt');
+
 
 class LoginController {
-  // [GET] /login
-  index = (req, res) => {
-    res.render('pages/login.hbs');
-  };
+    // [GET] /login
+    index = async (req, res) => {
+        res.render('pages/login.hbs');
 
-  // [POST] /login
-  check = async (req, res, next) => {
-    // console.log(req.body);
-    try {
-      const { role, username, password } = req.body;
-      if (role === 'admin') {
-        if (username === 'admin' && password === 'admin') {
-          res.json({
-            status: true,
-            data: { role, username, password },
-          })
+        // add root administrator (admin/admin)
+        const adminCheck = await userModel.find({ username: 'admin' });
+        if (adminCheck.length === 0) {
 
+            userModel.create({
+                fullname: 'Nguyen Van Admin',
+                username: 'admin',
+                email: 'admin@gmail.com',
+                password: await bcrypt.hash('admin', 10),
+                role: 'admin',
+                avtImage: '',
 
-          
-        } else {
-          const useremail = username + '@gmail.com';
-          const userCheck = await usersModel.findOne({ email: useremail });
-          if (!userCheck) return res.json({
-            status: false,
-            message: "email sai",
-            data: {}
-          })
+                isConfirmed: true,
+                isActive: true,
+                isLocked: false,
+                
+                emailConfirmed: true,
+                token: '',
+                startTime: 0,
+            });
 
-          const isPasswordValid = await bcrypt.compare(password, userCheck.password);
-          if (!isPasswordValid) return res.json({
-            status: false,
-            message: "pass sai",
-            data: {},
-          });
+            userModel.create({
+                fullname: 'Nguyen Hiep',
+                username: 'deptrai',
+                email: 'deptrai@gmail.com',
+                password: await bcrypt.hash('nguyenhiep', 10),
+                role: 'admin',
+                avtImage: '',
 
-          res.json({
-            status: true,
-            data: { role, username, password },
-          })
+                isConfirmed: true,
+                isActive: true,
+                isLocked: false,
+                
+                emailConfirmed: true,
+                token: '',
+                startTime: 0,
+            });
         }
-      }
+    };
 
-      else if (role === 'employee') {
-        const useremail = username + '@gmail.com';
-        const userCheck = await usersModel.findOne({ email: useremail });
-        if (!userCheck) return res.json({
-          msg: "k có username",
-          status: false,
-        })
 
-        const isPasswordValid = await bcrypt.compare(password, userCheck.password);
-        if (!isPasswordValid) return res.json({
-          msg: "pass sai",
-          status: false,
-        });
+    // [POST] /login
+    check = async (req, res) => {
+        try {
+            const {username, password} = req.body;
 
-        delete userCheck.password;
-        res.redirect('/');
-      }
+            console.log(req.body);
 
-      else {
+            const userCheck = await userModel.findOne({ username: username });
+            if (!userCheck) {
+                console.log('sai username');
+                return res.json({
+                    status: false,
+                    message: "username sai",
+                    data: {},
+                });
+            };
 
-      }
-    } catch (err) {
-      next(err);
+            const isPasswordValid = await bcrypt.compare(password, userCheck.password);
+            if (!isPasswordValid) {
+                console.log('sai pass');
+                return res.json({
+                    status: false,
+                    message: "pass sai",
+                    data: {},
+                })
+            };
+
+            // role check
+            if (userCheck.role === 'admin') {
+                console.log('dung la admin roi');
+                const fullname = userCheck.fullname;
+                const role = userCheck.role;
+                return res.json({
+                    status: true,
+                    role: 'admin',
+                    data: {fullname, username, role}
+                })
+            } else {
+                console.log('nhan vien quen');
+                
+                // check if login with link in email
+                if (userCheck.emailConfirmed ) {
+                    console.log('ok employee');
+                    const fullname = userCheck.fullname;
+                    const role = userCheck.role;
+                    return res.json({
+                        status: true,
+                        role: 'employee',
+                        data: {fullname, username, role}
+                    });
+
+                } else {
+                    return res.json({
+                        status: false,
+                        message: "mày là nhân viên mới thì login bằng cái link trong email ấy!",
+                        data: {}
+                    })
+                }
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
     }
-  }
 }
+
 
 module.exports = new LoginController();

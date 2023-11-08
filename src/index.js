@@ -4,7 +4,7 @@ const { engine } = require('express-handlebars');
 const path = require('path');
 const app = express();
 const port = 3000;
-const route = require('../routes/index.route');
+const route = require('./routes/index');
 const db = require('./config/db');
 const bodyParser = require('body-parser');
 const bycrypt = require('bcrypt');
@@ -35,6 +35,11 @@ db.connect();
 // ** router
 route(app);
 
+
+
+
+
+
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`The application is listening at http://localhost:${port}, press Ctrl+C to quit.`);
 });

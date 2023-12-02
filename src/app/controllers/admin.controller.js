@@ -2,6 +2,10 @@ const userModel = require("../models/users.model");
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+// const { createCanvas } = require('canvas');
+// const fs = require('fs');
+// const path = require('path');
+
 
 function generateToken(email) {
     return crypto.createHash('sha256').update(email).digest('hex');
@@ -57,11 +61,11 @@ class AdminController {
         });
 
         console.log();
-        res.render('./pages/admin.home.hbs', { employeeList: empls });
+        res.render('pages/admin.home.hbs', { employeeList: empls });
     };
 
 
-    // [POST] /admin
+    // [POST] /admin            // add employee
     addEmpl = async (req, res) => {
         try {
             const {fullname, email} = req.body;
@@ -134,7 +138,6 @@ class AdminController {
         }
     }
 
-
     // [GET] /admin/products
     productList = async (req, res) => {
         res.render('pages/admin.products.hbs');
@@ -147,7 +150,7 @@ class AdminController {
 
     // [GET] /admin/p/update
     passUpdate = async (req, res) => {
-        res.render('./pages/changePass.hbs');
+        res.render('pages/changePass.hbs');
     }
 
     // [POST] /admin/p/update

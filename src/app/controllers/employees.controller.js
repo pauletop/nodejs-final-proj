@@ -1,11 +1,17 @@
 const userModel = require("../models/users.model");
 const bcrypt = require('bcrypt');
+const productModel = require("../models/products.model");
 
 
 class EmployeesController {
     // [GET] /employee
     index = async (req, res) => {
-        res.render('pages/employee.home.hbs');  
+        let productList = await productModel.find();
+        let prds = productList.map(prd => {
+            return prd.toObject();;
+        });
+
+        res.render('pages/employee.home.hbs', { productList: prds });  
     };
 
     // [POST] /employee
@@ -18,8 +24,8 @@ class EmployeesController {
     checkNew = async (req, res) => {
         try {
             const data = req.body.username;
-            console.log(data);
-            console.log("kqnc");
+            // console.log(data);
+            // console.log("kqnc");
 
             const userCheck = await userModel.findOne({ username: req.body.username });
             if (!userCheck.isConfirmed) {
@@ -66,6 +72,7 @@ class EmployeesController {
             const userCheck = await userModel.findOne({ username: username });
             console.log(oldPass);
             console.log(userCheck.fullname);
+            console.log(userCheck.id);
 
 
             if (!(await bcrypt.compare(oldPass, userCheck.password))) {

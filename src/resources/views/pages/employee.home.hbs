@@ -5,7 +5,8 @@
 </div> <br>
 
 <button id="changeAvt">đổi avatar</button> 
-<img src="/upload/empty.png" alt="">
+
+<img src="/images/avatar/empty.png" alt="">
 
 <br><br><br>
 
@@ -14,20 +15,48 @@
 <p id="changePassMess"></p>
 <button id="changePass">đổi mật khẩu</button> <br>
 
-
 <br><br><br>
 
 <div id="feature">
     <a href="/employee/customers">khách hàng</a> <br> 
 
-    <a href="/employee/stat">thống kê</a> <br> <br>
+
+    <a href="/employee/stat">thống kê</a> <br>
+
+    <a href="/employee/order">đơn hàng</a> <br>
+
 
 
     <h2>danh sách hàng hóa:</h2>
 
 
+    <table>
+        <thead>
+            <th>barcode</th>
+            <th>name</th>
+            <th>retail price</th>
+            <th>category</th>
+            <th>creation date</th>
+        </thead>
+        <tbody>
+            {{#each productList}}
+                <tr>
+                    <td><img src="{{barcodeImg}}" alt=""></td>
+                    <td>{{name}}</td>
+                    <td>${{retailPrice}}</td>
+                    <td>{{category}}</td>
+                    <td>{{creationDate}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
 
-</div>
+
+
+
+
+</div> <br>
+
 
 
 

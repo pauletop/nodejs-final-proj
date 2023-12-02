@@ -9,6 +9,21 @@ if (!isLogin || localStorage.getItem("role") !== "admin") {
 
 
 
+document.querySelector('#signoutBtn').addEventListener('click', e => {
+    localStorage.clear();
+    window.location.href = '/';
+});
+
+
+document.querySelector('#changePass').addEventListener('click', async e => {
+    e.preventDefault();
+    window.location.href = 'admin/p/update'
+    //console.log('check');
+});
+
+
+
+
 document.querySelector('#name').innerHTML = localStorage.getItem("fullname");
 
 

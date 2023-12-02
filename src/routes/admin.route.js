@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('../app/controllers/admin.controller');
+const productsController = require('../app/controllers/products.controller');
 
 // [GET] /admin
 router.get('/', adminController.index);
@@ -12,7 +13,12 @@ router.post('/', adminController.addEmpl);
 router.get('/extra/:c', adminController.extra);
 
 // [GET] /admin/products
-router.get('/products', adminController.productList);
+
+router.get('/products', productsController.index);
+
+// [POST] /admin/products
+router.post('/products', productsController.addPrd);
+
 
 // [GET] /admin/stat
 router.get('/stat', adminController.stat);
@@ -31,5 +37,19 @@ router.post('/l/employee', adminController.lockEmpl)
 
 // [POST] /admin/send/employee
 router.post('/send/employee', adminController.sendMail);
+
+
+
+router.get('/products/update', productsController.getUpdate);
+
+
+router.post('/products/update/e', productsController.thisPrd);
+
+
+router.post('/products/update', productsController.postUpdate);
+
+
+
+router.delete('/products/del/:id', productsController.delPrd);
 
 module.exports = router;

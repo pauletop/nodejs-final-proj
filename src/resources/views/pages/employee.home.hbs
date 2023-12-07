@@ -1,3 +1,18 @@
+<section id='homepage-body' class='bg-normal'>
+    <div class='container'>
+        <h1 class="text-pri-color">employee page</h1>
+        <div>
+        <h2 class="pri-color">xin chào <p id="name"></p></h2>
+        <div>
+            <div class="col-10 col-lg-6" id="illustration">
+                <object data="/imgs/svgs/employee.svg" type="image/svg+xml" class="svgimage"></object>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
 <h1>employee page</h1><br>
 
 <div>
@@ -58,7 +73,15 @@
 </div> <br>
 
 
-
+<script>
+  // when website is loaded $(window).on('load', function () { setColorSVG('#footer', "#footer
+  $(window).on('load', function () {
+    setColorSVG('.pri-color', '#illustration object');
+    $(".close").click(()=>{
+      $(".alert").fadeOut();
+    })
+  });
+</script>
 
 
 

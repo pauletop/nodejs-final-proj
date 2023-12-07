@@ -11,7 +11,7 @@ document.querySelector('#signoutBtn').addEventListener('click', e => {
 
 document.querySelector('#changePass').addEventListener('click', async e => {
     e.preventDefault();
-    window.location.href = 'employee/p/update';
+    window.location.href = '/employee/p/update';
 });
 
 document.querySelector('#changeAvt').addEventListener('click', async e => {

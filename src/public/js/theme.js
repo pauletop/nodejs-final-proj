@@ -30,10 +30,10 @@ $(document).ready(function () {
     window.location.href = '/';
   });
 
-  document.querySelector('#changePass').addEventListener('click', async (e) => {
-    e.preventDefault();
-    window.location.href = '/admin/p/update';
-  });
+  // document.querySelector('#changePass').addEventListener('click', async (e) => {
+  //   e.preventDefault();
+  //   window.location.href = '/admin/p/update';
+  // });
 
   toggle.onclick = function () {
     var currentTheme = document.documentElement.getAttribute('data-theme');

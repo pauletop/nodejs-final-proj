@@ -27,10 +27,8 @@ addEmployeeForm.addEventListener("submit", async e => {
         dialogAlert("Add employee failed", "Email already exists, please try again!");
     } else {
         localStorage.setItem("empl", data.data);
-        dialogAlert("Add employee successfully", "Please tell your employee to check email to set password!");
-        setTimeout(() => {
-            window.location.reload();
-        }, 3000);
+        await dialogAlertWait("Add employee successfully", "Please tell your employee to check email to set password!");
+        window.location.reload();
     };
 });
 

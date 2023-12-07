@@ -101,3 +101,26 @@ const dialogAlert = (title = "Announcement", message) => {
   $dia.find(".modal-body").text(message);
   $dia.modal("show");
 };
+const dialogAlertWait = (title = "Announcement", message) => {
+  let $dia = $("#message-dia");
+  $dia.find(".modal-title").text(title);
+  $dia.find(".modal-body").text(message);
+  $dia.find(".bg-btn").hide();
+  $dia.modal("show");
+  return new Promise((resolve, reject) => {
+      $dia.on("hidden.bs.modal", () => {
+          resolve();
+      });
+  });
+}
+
+/* ------------------------------ *\
+|  *  * SOME HOVER FUNCTIONS *  *  |
+\* ------------------------------ */
+$(window).on('load', function () {
+  $(".search-spec input").focus(function () {
+      $(".search-spec").addClass("focus");
+  }, function () {
+      $(".search-spec").removeClass("focus");
+  });
+});

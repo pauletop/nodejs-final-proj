@@ -70,3 +70,34 @@ $(document).ready(function () {
     },
   );
 });
+
+
+/* ------------------------------ *\
+| *  * SOME HELPER FUNCTIONS *  *  |
+\* ------------------------------ */
+
+// use await to get return value from this promise
+const confirmDialog = (title, message, acceptName = "OK") => {
+  let $dia = $("#message-dia");
+  $dia.find(".modal-title").text(title);
+  $dia.find(".modal-body").text(message);
+  $dia.find(".bg-btn").text(acceptName);
+  $dia.find(".bg-btn").show();
+  return new Promise((resolve, reject) => {
+      $dia.modal("show");
+      $dia.find(".bg-btn").click(() => {
+          $dia.find(".bg-btn").hide();
+          resolve(true);
+      });
+      $dia.on("hidden.bs.modal", () => {
+          $dia.find(".bg-btn").hide();
+          resolve(false);
+      });
+  });
+};
+const dialogAlert = (title = "Announcement", message) => {
+  let $dia = $("#message-dia");
+  $dia.find(".modal-title").text(title);
+  $dia.find(".modal-body").text(message);
+  $dia.modal("show");
+};

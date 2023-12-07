@@ -1,43 +1,21 @@
 const isLogin = localStorage.getItem("username");
-
-console.log(isLogin);
-
 if (!isLogin || localStorage.getItem("role") !== "admin") {  
     window.location.href = '/login';
 }
-
-
-
-
 document.querySelector('#signoutBtn').addEventListener('click', e => {
     localStorage.clear();
     window.location.href = '/';
 });
-
-
 document.querySelector('#changePass').addEventListener('click', async e => {
     e.preventDefault();
     window.location.href = 'admin/p/update'
-    //console.log('check');
 });
-
-
-
-
 document.querySelector('#name').innerHTML = localStorage.getItem("fullname");
-
-
-
 const addEmployeeForm = document.querySelector(".addEmployee");
 addEmployeeForm.addEventListener("submit", async e => {
     e.preventDefault();
-
     const fullname = document.querySelector("#fullname").value;
     const email = document.querySelector("#email").value;
-
-    console.log(fullname);
-    console.log(email);
-
     const response = await fetch("/admin", {
         method: "post",
         headers: { "Content-Type": "application/json" },
@@ -45,15 +23,69 @@ addEmployeeForm.addEventListener("submit", async e => {
     });
 
     const data = await response.json();
-    console.log(data);
-
     if(!data.status) {
-        // window.location.reload();
-        document.querySelector(".message").innerHTML = "thêm k thành công";
-        $('.alert').show();
+        dialogAlert("Add employee failed", "Email already exists, please try again!");
     } else {
-        // save to stored
         localStorage.setItem("empl", data.data);
-        window.location.reload();
+        dialogAlert("Add employee successfully", "Please tell your employee to check email to set password!");
+        setTimeout(() => {
+            window.location.reload();
+        }, 3000);
     };
-})
+});
+
+$(window).on('load', function () {
+    $(".close").click(()=>{
+      $(".alert").fadeOut();
+    })
+  });
+  $(".lock-btn").click(async function(){
+    let isLocked = !$(this).find(".badge-danger").hasClass("d-none");
+    let isAccept = await confirmDialog("Confirm", `Are you sure to ${
+        isLocked ? "unlock" : "lock"
+    } this employee?`, isLocked ? "Unlock" : "Lock");
+    if(!isAccept){
+      return;
+    }
+    let email = $(this).closest("td").data("email");
+    let data = {
+      mail: email,
+      isLocked: isLocked
+    }
+    let $this = $(this);
+    $.ajax({
+      url: "/admin/l/employee",
+      method: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(data),
+      success: function(res){
+        if(res.status){
+          $this.find(".badge").toggleClass("d-none");
+          $("#message-dia .modal-body").text(res.message);
+          $("#message-dia").modal("show");
+        }
+      }
+    });
+    
+  })
+  $(".send-link-btn").click(async function(){
+    let isAccept = await confirmDialog("Confirm", `Are you sure to send mail to this employee?`, "Send");
+    if(!isAccept){
+      return;
+    }
+    let email = $(this).closest("td").data("email");
+    let data = {
+      mail: email
+    }
+    let $this = $(this);
+    $.ajax({
+      url: "/admin/send/employee",
+      method: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(data),
+      success: function(res){
+        $("#message-dia .modal-body").text(res.message);
+        $("#message-dia").modal("show");
+      }
+    });
+  });

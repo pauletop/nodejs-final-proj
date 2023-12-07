@@ -3,8 +3,8 @@ const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 // const { createCanvas } = require('canvas');
-// const fs = require('fs');
-// const path = require('path');
+const fs = require('fs');
+const path = require('path');
 
 
 function generateToken(email) {
@@ -12,14 +12,8 @@ function generateToken(email) {
 }
 
 const sendEmail = (recipientEmail, name) => {
-    const html = `
-    <h1>xin chào ${name}</h1>
-
-    <b>bạn là nhân viên mới</b> <br>
-
-    <a href="http://localhost:3000/admin/extra/c?token=${generateToken(recipientEmail)}" data-saferedirecturl="http://localhost:3000/admin/extra/c?token=${generateToken(recipientEmail)}">click zô để login (chỉ có hiệu lực 1 phút)</a>
-    `
-
+    const _linkData = `href="http://localhost:3000/admin/extra/c?token=${generateToken(recipientEmail)}" data-saferedirecturl="http://localhost:3000/admin/extra/c?token=${generateToken(recipientEmail)}"`;
+    const html = fs.readFileSync(path.join(__dirname, '../../public/gmail.html'), 'utf8').replace('${_name}', name).replace('${_linkData}', _linkData);
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         host: 'smtp.gmail.com',
@@ -32,9 +26,9 @@ const sendEmail = (recipientEmail, name) => {
     });
 
     const mailOptions = {
-        from: 'nodejsadmtest@gmail.com',
+        from: 'Digital World Assistant <nodejsadmtest@gmail.com>',
         to: recipientEmail,
-        subject: 'Subject of your email',
+        subject: 'Set up your DWA account!',
         html: html,
     };
 
@@ -214,16 +208,14 @@ class AdminController {
 
     // [POST] /admin/l/employee
     lockEmpl = async (req, res) => {
+        console.log(req.body);
         const userCheck = await userModel.findOne({ email: req.body.mail });
         if (!userCheck.isLocked) {
             await userModel.updateOne({ email: req.body.mail }, { isLocked: true }).then(() => {
                 const isLocked = userCheck.isLocked;
-                console.log('ok');
-                console.log(isLocked);
-                
                 return res.json({
                     status: true,
-                    message: "thực hiện thành công",
+                    message: `Lock employee ${userCheck.fullname} successfully`,
                     data: { isLocked }
                 })
             });
@@ -231,12 +223,9 @@ class AdminController {
         } else {
             await userModel.updateOne({ email: req.body.mail }, { isLocked: false }).then(() => {
                 const isLocked = userCheck.isLocked;
-                console.log('ok');
-                console.log(isLocked);
-                
                 return res.json({
                     status: true,
-                    message: "thực hiện thành công",
+                    message: `Unlock employee ${userCheck.fullname} successfully`,
                     data: { isLocked }
                 })
             });
@@ -248,13 +237,14 @@ class AdminController {
     // [POST] /admin/send/employee
     sendMail = async (req, res) => {
         try {
-            const fullname = await userModel.findOne({ email: req.body.mail }).fullname;
+            const account = await userModel.findOne({ email: req.body.mail });
+            const fullname = account.fullname;
             await userModel.updateOne({ email: req.body.mail }, { startTime: new Date().getTime() }).then(() => {                
                 sendEmail(req.body.mail, fullname);
 
                 return res.json({
                     status: true,
-                    message: "gửi mail thành công",
+                    message: "Send email successfully",
                     data: { }
                 })
             })
@@ -263,7 +253,7 @@ class AdminController {
             console.log(error);
             return res.json({
                 status: false,
-                message: "k gửi đc",
+                message: "Send email failed, please check again",
                 data: {  }
             });
         }        

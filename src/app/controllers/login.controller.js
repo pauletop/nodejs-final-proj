@@ -70,7 +70,7 @@ class LoginController {
                 console.log('sai pass');
                 return res.json({
                     status: false,
-                    message: "pass sai",
+                    message: "Incorrect username or password!",
                     data: {},
                 })
             };
@@ -102,7 +102,7 @@ class LoginController {
                 } else {
                     return res.json({
                         status: false,
-                        message: "mày là nhân viên mới thì login bằng cái link trong email ấy!",
+                        message: "You have not confirmed your email yet!",
                         data: {}
                     })
                 }

@@ -58,7 +58,7 @@
                 Active?
               </th>
               <th scope="col">
-                Locked?
+                Action?
               </th>
             </thead>
             <tbody>
@@ -75,12 +75,21 @@
                       <span class="badge badge-danger">Inactive</span>
                     {{/if}}
                   </td>
-                  <td class="text-center">
-                    {{#if isLocked}}
-                      <span class="badge badge-danger"><i class="bi bi-lock-fill"></i></span>
-                    {{else}}
-                      <span class="badge badge-success"><i class="bi bi-unlock-fill"></i></span>
-                    {{/if}}
+                  <td class="text-center" data-email="{{email}}">
+                    <div class="d-flex justify-content-between">
+                        <button class="hidden-btn lock-btn" title="Lock/Unlock this employee">
+                          {{#if isLocked}}
+                            <span class="badge badge-danger"><i class="bi bi-lock-fill"></i></span>
+                            <span class="badge badge-success d-none"><i class="bi bi-unlock-fill"></i></span>
+                          {{else}}
+                            <span class="badge badge-success"><i class="bi bi-unlock-fill"></i></span>
+                            <span class="badge badge-danger d-none"><i class="bi bi-lock-fill"></i></span>
+                          {{/if}}
+                        </button>
+                        <button class="hidden-btn send-link-btn" title="Send link to this employee">
+                            <span class="badge badge-info"><i class="bi bi-envelope-fill"></i></span>
+                        </button>
+                    </div>
                   </td>
                 </tr>
               {{/each}}
@@ -90,8 +99,6 @@
       </div>
     </div>
   </div>
-  
-
 </section>
 
 <br /><br /><br />
@@ -105,10 +112,3 @@
 <a href='/admin/stat'>thống kê</a>
 
 <script src='/js/adminPage.js'></script>
-<script>
-  $(window).on('load', function () {
-    $(".close").click(()=>{
-      $(".alert").fadeOut();
-    })
-  });
-</script>

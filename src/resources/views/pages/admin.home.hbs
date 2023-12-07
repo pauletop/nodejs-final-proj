@@ -7,7 +7,7 @@
         <h2 class="teriary-color" id="name"></h2 class="teriary-color">
     </p>
     <div class="row mt-5 justify-content-center">
-      <div class="col-10 col-lg-5">
+      <div class="col-10 col-lg-4">
         <h2 class="text-center">
             Add new <span class="pri-color">employee</span>
         </h2>
@@ -36,7 +36,7 @@
           </div>
       </div>
       {{!-- end of col-5 --}}
-      <div class="col-12 col-lg-7 mt-lg-0 mt-5">
+      <div class="col-12 col-lg-8 mt-lg-0 mt-5">
         <div class="table-responsive">
           <h2 class="text-center">
             List of <span class="pri-color">employees</span>
@@ -44,7 +44,7 @@
           <p class="text-center text-sm">
             Click on the employee's name to view more details
           </p>
-          <table class="table table-striped table-hover mt-2">
+          <table class="table table-striped table-hover mt-2 w-100">
             <thead>
               <th scope="col">#</th>
               <th scope="col">
@@ -67,7 +67,7 @@
                   <th scope="row">{{@index}}</th>
                   <td>{{avtImage}}</td>
                   <td><a href='/admin/e?m={{email}}'>{{fullname}}</a></td>
-                  <td>{{email}}</td>
+                  <td class="text-dot">{{email}}</td>
                   <td class="text-center">
                     {{#if isActive}}
                       <span class="badge badge-success">Active</span>

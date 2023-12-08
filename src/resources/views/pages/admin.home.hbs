@@ -81,7 +81,7 @@
                   </td>
                   <td class="text-center" data-email="{{email}}">
                     <div class="d-flex justify-content-between">
-                        <button class="hidden-btn lock-btn" title="Lock/Unlock this employee">
+                        <button class="hidden-btn lock-btn" title="Lock/Unlock this employee" data-status="{{#if isLocked}}lock{{else}}unlock{{/if}}">
                           {{#if isLocked}}
                             <span class="badge badge-danger"><i class="bi bi-lock-fill"></i></span>
                             <span class="badge badge-success d-none"><i class="bi bi-unlock-fill"></i></span>

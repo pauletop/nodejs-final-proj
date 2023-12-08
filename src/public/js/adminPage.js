@@ -61,6 +61,8 @@ $(window).on('load', function () {
           $this.find(".badge").toggleClass("d-none");
           $("#message-dia .modal-body").text(res.message);
           $("#message-dia").modal("show");
+          $this.attr("data-status", res.data.isLocked ? "unlook" : "lock");
+          $this.data("status", res.data.isLocked ? "unlook" : "lock");
         }
       }
     });

@@ -2,6 +2,7 @@
     {
       _id: ObjectId("6557537352f9bd81e12af200"),
       name: 'hàu không tươi',
+      barcode: "1",
       barcodeImg: '/images/barcode/6557537352f9bd81e12af200.png',
       importPrice: '75',
       retailPrice: '346',
@@ -14,6 +15,7 @@
     {
       _id: ObjectId("6557539652f9bd81e12af204"),
       name: 'xà phòng',
+      barcode: "2",
       barcodeImg: '/images/barcode/6557539652f9bd81e12af204.png',
       importPrice: '53',
       retailPrice: '80',
@@ -26,6 +28,7 @@
     {
       _id: ObjectId("6557a7f7a01626fe2645673a"),
       name: 'ak-47 promax',
+      barcode: "3",
       barcodeImg: '/images/barcode/6557a7f7a01626fe2645673a.png',
       importPrice: '492',
       retailPrice: '112',

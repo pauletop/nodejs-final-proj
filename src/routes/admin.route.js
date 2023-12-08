@@ -2,6 +2,41 @@ const express = require('express');
 const router = express.Router();
 const adminController = require('../app/controllers/admin.controller');
 const productsController = require('../app/controllers/products.controller');
+// file upload config
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './src/public/images/pdThumbs');
+    },
+    filename: function(req, file, cb) {
+        cb(null, `${req.body.pcode || "newImg"}.png`); // if the extension is not png, it will be converted to png
+    }
+});
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = ["image/png", "image/jpg", "image/jpeg"];
+    if (!allowedTypes.includes(file.mimetype)) {
+        const error = {
+            message: "Wrong file type"
+        }
+        return cb(error, false);
+    }
+    cb(null, true);
+};
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1000000 // 1 MB
+    },
+    fileFilter: fileFilter
+});
+const handleFileUploadError = (error, req, res, next) => {
+    if (error) {
+        res.status(400).json({
+            status: false,
+            message: error.message
+        });
+    }
+};
 
 // [GET] /admin
 router.get('/', adminController.index);
@@ -17,7 +52,7 @@ router.get('/extra/:c', adminController.extra);
 router.get('/products', productsController.index);
 
 // [POST] /admin/products
-router.post('/products', productsController.addPrd);
+router.post('/products', upload.single("imagePrd"), handleFileUploadError, productsController.addPrd);
 
 
 // [GET] /admin/stat

@@ -5,7 +5,6 @@ const path = require('path');
 const bcrypt = require('bcrypt');
 const JsBarcode = require("jsbarcode");
 
-
 function genBarcode(code) {
     const canvas = createCanvas(200, 200);
     JsBarcode(canvas, code, {
@@ -16,8 +15,7 @@ function genBarcode(code) {
     });
 
     const buffer = canvas.toBuffer('image/png');
-    const srcPath = path.resolve(__dirname, '../..');
-    console.log(srcPath);
+    const srcPath = path.resolve(__dirname, '../..'); // D:\University\NodeJS\Final-project\Node new\nodejs-finalproject\src
     fs.writeFileSync(srcPath + `/public/images/barcode/${code}.png`, buffer);
 }
 
@@ -37,10 +35,9 @@ class ProductController {
 
     // [POST] /admin/products
     addPrd = async (req, res) => {
-        // console.log("helelele")
-        const { pname, importPrice, retailPrice, category } = req.body;
-
+        const { pcode, pname, importPrice, retailPrice, category } = req.body;
         const newProduct = new productModel({
+            barcode: '',
             name: pname,
             barcodeImg: '',
             importPrice: importPrice,
@@ -50,24 +47,59 @@ class ProductController {
             beenPurchased: false,
             image: '',
         });
-
+        // req.file ? `/images/pdThumbs/${req.file.filename}` : null
+        var barcode = '';
         try {
             const result = await newProduct.save();
             const objectID = result._id;
-            // console.log(objectID);
-            const barcodeImgPath = `/images/barcode/${objectID}.png`;
+            if (pcode) {
+                const isBarcodeExist = await productModel.findOne({ barcode: pcode });
+                if (isBarcodeExist) {
+                    return res.status(400).json({
+                        status: false,
+                        message: "Barcode existed",
+                        data: {}
+                    });
+                }
+                barcode = pcode;
+            } else {
+                barcode = objectID;
+            }
+            var file = req.file;
+            var imgPath = '';
+            if (file) {
+                imgPath = `/images/pdThumbs/${req.file.filename}`;
+                if (!pcode){ // if there is no pcode, then rename the image file to the objectID
+                    fs.renameSync(file.path, file.destination + `/${barcode}.png`);
+                    imgPath = `/images/pdThumbs/${barcode}.png`;
+                }
+            }
+            if (imgPath == '') {
+                console.log("Không có file");
+            }
+            else {
+                console.log("Có file");
+            }
+            const barcodeImgPath = `/images/barcode/${barcode}.png`;
 
-            await productModel.updateOne({ _id: objectID }, { barcodeImg: barcodeImgPath });
-            genBarcode(objectID);
+            await productModel.updateOne({ _id: objectID }, { 
+                barcode: barcode,
+                barcodeImg: barcodeImgPath,
+                image: imgPath
+            });
+            genBarcode(barcode);
 
         } catch (error) {
-            console.log(err)
+            console.log(error);
+            return res.status(500).json({
+                status: false,
+                message: "Something went wrong, please try again later",
+                data: {}
+            });
         }
-        
-
         return res.json({
             status: true,
-            message: "lưu ok",
+            message: "Product added successfully",
             data: {}
         });
         

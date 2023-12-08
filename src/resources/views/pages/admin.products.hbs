@@ -16,7 +16,9 @@
 
 <div>
     <b>thêm sản phẩm:</b> <br>
-    <form class="addPrd">
+    <form class="addPrd" id="addPdForm" enctype="multipart/form-data" method="post">
+        <label for="pcode">Barcode</label>
+        <input type="text" id="pcode" name="pcode"><br>
 
         <label for="pname">tên sản phẩm</label><br>
         <input type="text" id="pname" name="pname" required><br>
@@ -33,7 +35,6 @@
 
         <label for="imagePrd">upload ảnh</label> <br>  
         <input type="file" id="imagePrd" name="imagePrd" value=""> <br><br>
-
 
 
         <br>

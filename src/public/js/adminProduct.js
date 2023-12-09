@@ -182,6 +182,16 @@ $(document).ready(function() {
             processData: false
         });
     });
+    $(".deletePrd").click(async function() {
+        let prdID = $(this).closest("td").data("id"),
+            prdName = $(this).closest("tr").find("td:nth-child(4)").text();
+        let isAccept = await confirmDialog("Confirm", `Are you sure to delete product '${prdName}'?`, "Delete");
+        if (!isAccept) {
+            return;
+        }
+        hideCustomDialog();
+        alert(prdID);
+    });
 });
 
 const delBtns = document.querySelectorAll(".deletePrd");

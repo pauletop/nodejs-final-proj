@@ -112,7 +112,11 @@ const dialogAlertWait = (title = "Announcement", message) => {
           resolve();
       });
   });
-}
+};
+const hideCustomDialog = () => {
+  let $dia = $("#message-dia");
+  $dia.modal("hide");
+};
 
 /* ------------------------------ *\
 |  *  * SOME HOVER FUNCTIONS *  *  |

@@ -1,6 +1,6 @@
-if (localStorage.getItem("role") !== "employee" || !localStorage.getItem("username")) {
-    window.location.href = '/login';
-}
+// if (localStorage.getItem("role") !== "employee" || !localStorage.getItem("username")) {
+//     window.location.href = '/login';
+// }
 
 document.querySelector('#name').innerHTML =  localStorage.getItem("fullname");
 

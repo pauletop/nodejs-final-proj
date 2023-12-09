@@ -37,6 +37,20 @@ const handleFileUploadError = (error, req, res, next) => {
         });
     }
 };
+// forbidden if req.session.user.role != "admin"
+const checkAdmin = (req, res, next) => {
+    if (req.session.role == "admin") {
+        next();
+    } else {
+        res.status(403).json({
+            status: false,
+            message: "Access Forbidden"
+        });
+        // or return an 403 error, which will be handled by the error handler middleware, which status code will be 403
+    }
+}
+
+router.use(checkAdmin);
 
 // [GET] /admin
 router.get('/', adminController.index);

@@ -35,7 +35,13 @@ addEmployeeForm.addEventListener("submit", async e => {
 $(window).on('load', function () {
     $(".close").click(()=>{
       $(".alert").fadeOut();
-    })
+    });
+    $(".search-spec input").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("table tbody tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1 || $(this).find('.hidden-btn').data("status").startsWith(value));
+      });
+    });
   });
   $(".lock-btn").click(async function(){
     let isLocked = !$(this).find(".badge-danger").hasClass("d-none");

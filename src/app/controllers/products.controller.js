@@ -28,8 +28,14 @@ class ProductController {
             let prdObj = prd.toObject();
             return prdObj;
         });
-
-        res.render('pages/admin.products.hbs', { productList: prds });
+        // get a list of categories
+        let categories = [];
+        prds.forEach(prd => {
+            if (!categories.includes(prd.category)) {
+                categories.push(prd.category);
+            }
+        });
+        res.render('pages/admin.products.hbs', { productList: prds, categories });
     };
 
 
@@ -175,11 +181,16 @@ class ProductController {
         const prdID = req.params.id;
 
         try {
+            const prdObj = await productModel.findOne({ _id: prdID });
             const delPrd = await productModel.findByIdAndDelete(prdID);
             if (!delPrd) {
                 return res.status(400).json({ message: 'Product not found' });
             }
-          
+            const srcPath = path.resolve(__dirname, '../../public'); // D:\University\NodeJS\Final-project\Node new\nodejs-finalproject\public
+            if (prdObj.image && prdObj.image != '') {
+                fs.unlinkSync(srcPath + prdObj.image);
+            }
+            fs.unlinkSync(srcPath + prdObj.barcodeImg);
               // Trả về phản hồi cho client-side
               return res.json({
                 status: true,

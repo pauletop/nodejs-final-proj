@@ -7,6 +7,9 @@ const helpers = {
     },
     add: (a, b) => {
       return a + b;
-    }
+    },
+    equals: (a, b) => {
+      return a == b;
+    },
 };
 module.exports = helpers;

@@ -38,7 +38,7 @@ $(document).ready(function() {
     $("#submitAdd").click(e => {
         e.preventDefault();
         $form.find("input[type='submit']").trigger("click");
-    })
+    });
     $form.submit(function(e) {
         e.preventDefault();
         let formData = new FormData(this);
@@ -49,13 +49,11 @@ $(document).ready(function() {
             category = $("#product-category").val();
         }
         formData.append("category", category);
-        console.log(formData);
         $.ajax({
             url: '/admin/products',
             type: 'POST',
             data: formData,
             success: function(data) {
-                console.log(data);
                 if (data.status) {
                     Swal.fire({
                         icon: 'success',
@@ -93,33 +91,98 @@ $(document).ready(function() {
             processData: false
         });
     });
-});
 
-const updateBtns = document.querySelectorAll(".updatePrd");
-for (let i = 0; i < updateBtns.length; i++) {
-    let thisBtn = updateBtns[i];
-    thisBtn.addEventListener('click', async e => {
-        const prdID = thisBtn.id;
+    // See barcode image
+    $(".see-barcode").click(function() {
+        let barcode = $(this).data("src");
+        Swal.fire({
+            title: '<span style="color: var(--bg-primary-color)">Barcode</span>',
+            html: `<img src="${barcode}" alt="barcode" style="width: 100%">`,
+            showCloseButton: true,
+            showConfirmButton: false,
+            background: 'var(--text-primary-color)',
+        });
+    });
 
-        const response = await fetch("/admin/products/update/e", {
+    // Update product
+    $(".updatePrd").click(async function() {
+        var prdID = $(this).closest("td").data("id");
+        var response = await fetch("/admin/products/update/e", {
             method: "post",
             headers: { "Content-Type": "application/json" },
             body : JSON.stringify({prdID}),
         });
-
-        const data = await response.json();
-        console.log(data.data);
-
-        localStorage.setItem('_id', prdID);
-        localStorage.setItem('name', data.data.name);
-        localStorage.setItem('imp', data.data.imp);
-        localStorage.setItem('ret', data.data.ret);
-        localStorage.setItem('cat', data.data.cat);
-
-
-        window.location.href = '/admin/products/update'
-    })    
-}
+        var data = await response.json();
+        var $editModal = $("#editModal");
+        $editModal.find("#product-barcode-e").val(data.data.barcode);
+        $editModal.find("#product-name-e").val(data.data.name);
+        $editModal.find("#product-price1-e").val(data.data.imp);
+        $editModal.find("#product-price2-e").val(data.data.ret);
+        $editModal.find("#product-category-e").val(data.data.cat);
+        $editModal.modal("show");
+    });
+    $("#submitEdit").click(e => {
+        e.preventDefault();
+        $(this).find("input[type='submit']").trigger("click");
+    });
+    $("#editPdForm").submit(function(e) {
+        e.preventDefault();
+        let formData = new FormData(this);
+        var category;
+        if ($("#enter-category").is(":checked")) {
+            category = $("#new-category-name-e").val();
+        } else {
+            category = $("#product-category-e").val();
+        }
+        formData.append("category", category);
+        $.ajax({
+            url: '/admin/products/update',
+            type: 'POST',
+            data: formData,
+            success: function(data) {
+                let timer = 2000;
+                console.log(data);
+                if (data.status) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '<span style="color: var(--bg-primary-color)">Edit product successfully</span>',
+                        showConfirmButton: false,
+                        showCloseButton: true,
+                        background: 'var(--text-primary-color)',
+                        timer: timer
+                    });
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, timer);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '<span style="color: var(--bg-primary-color)">Edit product failed</span>',
+                        text: data.message,
+                        showConfirmButton: false,
+                        showCloseButton: true,
+                        background: 'var(--text-primary-color)',
+                        timer: timer
+                    });
+                }
+            },
+            error: function(data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '<span style="color: var(--bg-primary-color)">Edit product failed</span>',
+                    text: data.responseJSON.message,
+                    showConfirmButton: false,
+                    showCloseButton: true,
+                    background: 'var(--text-primary-color)',
+                    timer: 2000
+                });
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+});
 
 const delBtns = document.querySelectorAll(".deletePrd");
 for (let i = 0; i < delBtns.length; i++) {

@@ -1,20 +1,108 @@
 <link rel="stylesheet" href="/styles/form2.css">
 
 
-<h1>admin page</h1><br>
+<section id='body-section' class='bg-normal head-bold'>
+    <div class="container">
+        <h2 class="teriary-color text-center" style="font-family: Montserrat, sans-serif;">
+            Product Management
+        </h2>
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <div style="position: absolute;right: 2.5em;">
+                        <button class="btn btn-light d-flex align-items-center" data-toggle="modal" data-target="#addModal">
+                            <i class="bi bi-plus-square pri-color mr-2"></i>
+                            Add product
+                        </button>
+                    </div>
+                    <h2 class="text-center">
+                        List of <span class="pri-color">products</span>
+                    </h2>
+                    <p class="text-center text-sm">
+                        Click on the barcode to view barcode image
+                    </p>
+                    <div class="form-group search-spec">
+                        <label for="search"><i class="bi bi-search"></i></label>
+                        <input type="text" id="search" class="form-control" placeholder="Search by keyword">
+                    </div>
+                    <table class="table table-striped table-hover mt-2 w-100">
+                        <thead>
+                        <th scope="col">#</th>
+                        <th scope="col">
+                            Barcode
+                        </th>
+                        <th scope="col">
+                            Image
+                        </th>
+                        <th scope="col">
+                            Product Name
+                        </th>
+                        <th scope="col">
+                            Import Price
+                        </th>
+                        <th scope="col">
+                            Retail Price
+                        </th>
+                        <th scope="col">
+                            Category
+                        </th>
+                        <th scope="col">
+                            Creation Date
+                        </th>
+                        <th scope="col">
+                            Action?
+                        </th>
+                        </thead>
+                        <tbody>
+                        {{#each productList}}
+                            <tr>
+                            <th scope="row">{{add @index 1}}</th>
+                            <td class="dot-dot" style="max-width: 100px;" title="{{barcode}}"><a data-src="{{barcodeImg}}" class="cursor-ptr see-barcode">
+                                    {{barcode}}
+                            </a></td>
+                            <td>
+                                {{#if (equals image "")}}
+                                {{else}}
+                                    <img src="{{image}}" alt="" class="img-fluid" style="max-width: 80px; max-height: 80px;">
+                                {{/if}}
+
+                            </td>
+                            <td>{{name}}</td>
+                            <td class="text-dot">{{formatCurrency importPrice}}</td>
+                            <td class="text-center">
+                                {{formatCurrency retailPrice}}
+                            </td>
+                            <td>{{category}}</td>
+                            <td>{{formatDate creationDate}}</td>
+                            <td class="text-center" data-id="{{_id}}">
+                                <div class="d-flex justify-content-between">
+                                    <button class="hidden-btn updatePrd" title="Edit this product">
+                                        <span class="badge badge-warning"><i class="bi bi-pencil-square"></i></span>
+                                    </button>
+                                    {{#if beenPurchased}}
+                                        <button class="hidden-btn" title="Delete this product" disabled>
+                                            <span class="badge badge-light"><i class="bi bi-trash-fill"></i></span>
+                                        </button>
+                                    {{else}}
+                                        <button class="hidden-btn deletePrd" title="Delete this product">
+                                            <span class="badge badge-danger"><i class="bi bi-trash"></i></span>
+                                        </button>
+                                    {{/if}}
+                                </div>
+                            </td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <div>
-    <h2>xin chào <p id="name"></p></h2>
+    
 </div>
-
-<br>
-
-<button class="" id="signoutBtn">đăng cmn xuất</button> <br>
-
-<button class="" id="changePass">đổi mật khẩu</button> <br>
-
-<br><br><br>
-
 
 
 <!-- Modal -->
@@ -148,15 +236,11 @@
 <!-- End of modal -->
 <script>
     $(document).ready(function() {
-        $("#editModal").modal("show");
     });
 </script>
-<br> <br> 
-<h2>danh sách sản phẩm:</h2> <br>
 
 
-
-<table>
+{{!-- <table>
     <thead>
         <th>barcode</th>
         <th>name</th>
@@ -183,13 +267,10 @@
             </tr>
         {{/each}}
     </tbody>
-</table>
+</table> --}}
 
 
 
-<section id='body-section' class='bg-normal head-bold'>
-
-</section>
 
 
 

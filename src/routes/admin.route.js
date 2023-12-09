@@ -81,7 +81,7 @@ router.get('/products/update', productsController.getUpdate);
 router.post('/products/update/e', productsController.thisPrd);
 
 
-router.post('/products/update', productsController.postUpdate);
+router.post('/products/update', upload.single("imagePrd"), handleFileUploadError, productsController.postUpdate);
 
 
 

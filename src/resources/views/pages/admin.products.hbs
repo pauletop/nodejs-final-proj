@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="/styles/form2.css">
+
+
 <h1>admin page</h1><br>
 
 <div>
@@ -14,38 +17,140 @@
 
 
 
-<div>
-    <b>thêm sản phẩm:</b> <br>
-    <form class="addPrd" id="addPdForm" enctype="multipart/form-data" method="post">
-        <label for="pcode">Barcode</label>
-        <input type="text" id="pcode" name="pcode"><br>
-
-        <label for="pname">tên sản phẩm</label><br>
-        <input type="text" id="pname" name="pname" required><br>
-
-        <label for="importPrice">giá nhập</label><br>
-        <input type="text" id="importPrice" name="importPrice" required><br>
-
-        <label for="retailPrice">giá bán</label><br>
-        <input type="text" id="retailPrice" name="retailPrice" required><br>
-
-        <label for="category">loại hàng</label><br>
-        <input type="text" id="category" name="category" required><br>
-        
-
-        <label for="imagePrd">upload ảnh</label> <br>  
-        <input type="file" id="imagePrd" name="imagePrd" value=""> <br><br>
-
-
-        <br>
-        <button type="submit">thêm</button>
-
-    </form>
-
-    <br>
-    <p class="message"></p>
+<!-- Modal -->
+<div class="modal hide" id="addModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title pri-color text-bold" id="modalLabel">Add product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body container-fluid">
+                <form id="addPdForm" enctype="multipart/form-data" method="post">
+                    <div class="form-group">
+                        <label for="product-barcode" class="col-form-label">Barcode:</label> <!-- id used -->
+                        <input type="text" class="form-control" name="pcode" id="product-barcode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-name" class="col-form-label">Product Name:</label>
+                        <input type="text" class="form-control" name="pname" id="product-name" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 form-group">
+                            <label for="product-price1" class="col-form-label">Import Price:</label>
+                            <input type="number" class="form-control" name="importPrice" id="product-price1" step="0.01" required>
+                        </div>
+                        <div class="col-4 form-group">
+                            <label for="product-price2" class="col-form-label">Retail Price:</label>
+                            <input type="number" class="form-control" name="retailPrice" id="product-price2" step="0.01" required>
+                        </div>
+                        <div class="form-group col-4" style="margin-bottom: 0;">
+                            <label for="product-category" class="col-form-label">Category:</label> <!-- id used -->
+                            <select class="form-control" name="product-category" id="product-category" required>
+                                <option value="option1" th:selected="${categoryId == 1}">Option 1</option>
+                                <option value="option2">Option 2</option>
+                            </select>
+                            <div>
+                                    <div class="input-checkbox" style="display: inline;"> <!-- id used -->
+                                        <input type="checkbox" name="enter-category" id="enter-category" value="enter-category">
+                                        <label for="enter-category"><span></span>Or enter new category</label>
+                                        <div class="input-caption">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="new-category" id="new-category-name" placeholder="Enter new category">
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label for="product-image" class="col-form-label">Image:</label>
+                        <input type="file" class="form-control-file" name="imagePrd" id="product-image">
+                    </div>
+                    <!-- Add other form fields for other columns -->
+                    <input type="submit" hidden>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
+                <button type="submit" id="submitAdd" class="btn btn-secondary">Add</button>
+            </div>
+        </div>
+    </div>
 </div>
+<!-- End of modal -->
 
+<!-- Modal -->
+<div class="modal hide" id="editModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title pri-color text-bold" id="modalLabel">Update product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body container-fluid">
+                <form id="editPdForm" enctype="multipart/form-data" method="post">
+                    <div class="form-group">
+                        <label for="product-barcode-e" class="col-form-label">Barcode:</label> <!-- id used -->
+                        <input type="text" class="form-control" name="pcode" id="product-barcode-e" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-name-e" class="col-form-label">Product Name:</label>
+                        <input type="text" class="form-control" name="pname" id="product-name-e" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 form-group">
+                            <label for="product-price1-e" class="col-form-label">Import Price:</label>
+                            <input type="number" class="form-control" name="importPrice" id="product-price1-e" step="0.01" required>
+                        </div>
+                        <div class="col-4 form-group">
+                            <label for="product-price2-e" class="col-form-label">Retail Price:</label>
+                            <input type="number" class="form-control" name="retailPrice" id="product-price2-e" step="0.01" required>
+                        </div>
+                        <div class="form-group col-4" style="margin-bottom: 0;">
+                            <label for="product-category-e" class="col-form-label">Category:</label> <!-- id used -->
+                            <select class="form-control" name="product-category" id="product-category-e" required>
+                                <option value="option1">Option 1</option>
+                                <option value="option2">Option 2</option>
+                            </select>
+                            <div>
+                                    <div class="input-checkbox" style="display: inline;"> <!-- id used -->
+                                        <input type="checkbox" name="enter-category" id="enter-category-e" value="enter-category">
+                                        <label for="enter-category-e"><span></span>Or enter new category</label>
+                                        <div class="input-caption">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="new-category" id="new-category-name-e" placeholder="Enter new category">
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label for="product-image-e" class="col-form-label">Image:</label>
+                        <input type="file" class="form-control-file" name="imagePrd" id="product-image-e">
+                    </div>
+                    <!-- Add other form fields for other columns -->
+                    <input type="submit" hidden>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
+                <button type="submit" id="submitEdit" class="btn btn-secondary">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of modal -->
+<script>
+    $(document).ready(function() {
+        $("#editModal").modal("show");
+    });
+</script>
 <br> <br> 
 <h2>danh sách sản phẩm:</h2> <br>
 

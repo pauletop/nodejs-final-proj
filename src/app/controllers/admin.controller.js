@@ -200,9 +200,7 @@ class AdminController {
         console.log(req.query.m);
         console.log(empl.fullname);
 
-        const btnMes = empl.isLocked ? "mở khóa" : "khóa mõm";
-
-        res.render('pages/detail.employee.hbs', { fullname: empl.fullname, isLocked: empl.isLocked, email: empl.email, btnMes:btnMes});
+        res.render('pages/detail.employee.hbs', { fullname: empl.fullname, isLocked: empl.isLocked, email: empl.email});
     }
 
 

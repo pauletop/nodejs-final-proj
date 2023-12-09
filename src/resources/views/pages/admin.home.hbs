@@ -68,7 +68,7 @@
             <tbody>
               {{#each employeeList}}
                 <tr>
-                  <th scope="row">{{@index}}</th>
+                  <th scope="row">{{add @index 1}}</th>
                   <td>{{avtImage}}</td>
                   <td><a href='/admin/e?m={{email}}'>{{fullname}}</a></td>
                   <td class="text-dot">{{email}}</td>

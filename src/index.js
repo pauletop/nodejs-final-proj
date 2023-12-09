@@ -9,7 +9,6 @@ const db = require('./config/db');
 const bodyParser = require('body-parser');
 const bycrypt = require('bcrypt');
 
-
 // ** HTTP logger **
 app.use(morgan('tiny'));
 
@@ -17,7 +16,10 @@ app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ** Template engine **
-app.engine('.hbs', engine({ extname: '.hbs' }));
+app.engine('.hbs', engine({ 
+  extname: '.hbs',
+  helpers: require('./utils/helpers')
+ }));
 app.set("view engine', '.hbs");
 app.set('views', path.join(__dirname, 'resources', 'views'));
 

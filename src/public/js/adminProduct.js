@@ -1,8 +1,54 @@
 $(document).ready(function() {
     var $form = $('#addPdForm');
+    // support checkbox caption
+    $("#enter-category").click(function() {
+        let isChecked = $(this).is(":checked");
+        let $newCategoryName = $("#new-category-name"),
+            $productCategory = $("#product-category");
+        if (!isChecked) {
+            $productCategory.attr("disabled", false);
+            $productCategory.attr("required", true);
+            $newCategoryName.attr("required", false);
+        } else {
+            $productCategory.attr("disabled", true);
+            $productCategory.attr("required", false);
+            $newCategoryName.attr("required", true);
+        }
+    });
+    $("#enter-category-e").click(function() {
+        let isChecked = $(this).is(":checked");
+        let $newCategoryName = $("#new-category-name-e"),
+            $productCategory = $("#product-category-e");
+        if (!isChecked) {
+            $productCategory.attr("disabled", false);
+            $productCategory.attr("required", true);
+            $newCategoryName.attr("required", false);
+        } else {
+            $productCategory.attr("disabled", true);
+            $productCategory.attr("required", false);
+            $newCategoryName.attr("required", true);
+        }
+    });
+    $("#product-barcode").on("dblclick", function() {
+        $(this).attr("readonly", false);
+    });
+    $("#product-barcode").blur(function() {
+        $(this).attr("readonly", true);
+    });
+    $("#submitAdd").click(e => {
+        e.preventDefault();
+        $form.find("input[type='submit']").trigger("click");
+    })
     $form.submit(function(e) {
         e.preventDefault();
         let formData = new FormData(this);
+        var category;
+        if ($("#enter-category").is(":checked")) {
+            category = $("#new-category-name").val();
+        } else {
+            category = $("#product-category").val();
+        }
+        formData.append("category", category);
         console.log(formData);
         $.ajax({
             url: '/admin/products',
@@ -48,39 +94,6 @@ $(document).ready(function() {
         });
     });
 });
-
-
-
-// const addEmployeeForm = document.querySelector(".addPrd");
-// addEmployeeForm.addEventListener("submit", async e => {
-//     e.preventDefault();
-
-//     const pname = document.querySelector("#pname").value;
-//     const importPrice = document.querySelector("#importPrice").value;
-//     const retailPrice = document.querySelector("#retailPrice").value;
-//     const category = document.querySelector("#category").value;
-
-//     // console.log(pname);
-//     // console.log(category);   
-
-//     const response = await fetch("/admin/products", {
-//         method: "post",
-//         headers: { "Content-Type": "application/json" },
-//         body : JSON.stringify({pname, importPrice, retailPrice, category}),
-//     });
-
-//     const data = await response.json();
-//     console.log(data);
-
-//     if(!data.status) {
-//         // window.location.reload();
-//         document.querySelector(".message").innerHTML = "thêm k thành công";
-//     } else {
-//         // save to stored
-//         // localStorage.setItem("empl", data.data);
-//         window.location.reload();
-//     };
-// })
 
 const updateBtns = document.querySelectorAll(".updatePrd");
 for (let i = 0; i < updateBtns.length; i++) {

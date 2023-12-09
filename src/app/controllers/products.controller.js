@@ -35,7 +35,9 @@ class ProductController {
 
     // [POST] /admin/products
     addPrd = async (req, res) => {
+        console.log(req.body);
         const { pcode, pname, importPrice, retailPrice, category } = req.body;
+        console.log({ pcode, pname, importPrice, retailPrice, category });
         const newProduct = new productModel({
             barcode: '',
             name: pname,
@@ -114,12 +116,13 @@ class ProductController {
         const imp = prdCheck.importPrice;
         const ret = prdCheck.retailPrice;
         const cat = prdCheck.category;
+        const barcode = prdCheck.barcode;
 
 
         return res.json({
             status: true,
             message: "lấy ok",
-            data: { name, imp, ret, cat }
+            data: { name, imp, ret, cat, barcode }
         });
     }
 
@@ -148,7 +151,7 @@ class ProductController {
         await productModel.updateOne({ _id: prdID}, newData).then(() => {
             return res.json({
                 status: true,
-                message: "update thành công",
+                message: "Update product successfully",
                 data: { }
             })
         })
@@ -162,13 +165,13 @@ class ProductController {
         try {
             const delPrd = await productModel.findByIdAndDelete(prdID);
             if (!delPrd) {
-                return res.status(404).json({ message: 'k tìm thấy sản phẩm' });
+                return res.status(400).json({ message: 'Product not found' });
             }
           
               // Trả về phản hồi cho client-side
               return res.json({
                 status: true,
-                message: "xóa thành công",
+                message: "Delete product successfully",
                 data: { }
             });
 

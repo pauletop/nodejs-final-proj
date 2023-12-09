@@ -36,6 +36,7 @@ class ProductController {
     // [POST] /admin/products
     addPrd = async (req, res) => {
         const { pcode, pname, importPrice, retailPrice, category } = req.body;
+        console.log({ pcode, pname, importPrice, retailPrice, category });
         const newProduct = new productModel({
             barcode: '',
             name: pname,
@@ -114,12 +115,13 @@ class ProductController {
         const imp = prdCheck.importPrice;
         const ret = prdCheck.retailPrice;
         const cat = prdCheck.category;
+        const barcode = prdCheck.barcode;
 
 
         return res.json({
             status: true,
-            message: "lấy ok",
-            data: { name, imp, ret, cat }
+            message: "Get product successfully",
+            data: { name, imp, ret, cat, barcode }
         });
     }
 
@@ -132,11 +134,9 @@ class ProductController {
 
     // [POST] /admin/products/update
     postUpdate = async (req, res) => {
-        const prdID = req.body._id;
-        // const newName = req.body.pname;
-        // const newImp = req.body.importPrice;
-        // const newRet = req.body.retailPrice;
-        // const newCat = req.body.category;
+        console.log(req.file);
+        console.log(req.body);
+        const barcode = req.body.pcode;
 
         const newData = {
             name: req.body.pname,
@@ -144,14 +144,29 @@ class ProductController {
             retailPrice:  req.body.retailPrice,
             category: req.body.category,
         }
+        if (req.file) {
+            newData.image = `/images/pdThumbs/${req.file.filename}`;
+        }
+        console.log(newData);
+        await productModel.findOne({ _id: barcode }).then(async (prd) => {
+            console.log(prd);
+        });
 
-        await productModel.updateOne({ _id: prdID}, newData).then(() => {
+        await productModel.updateOne({ barcode: barcode}, newData).then(() => {
             return res.json({
                 status: true,
-                message: "update thành công",
+                message: "Update product successfully",
                 data: { }
             })
         })
+        .catch((err) => {
+            console.log(err);
+            return res.status(500).json({
+                status: false,
+                message: "Something went wrong, please try again later",
+                data: {}
+            });
+        });
     }
 
 
@@ -162,13 +177,13 @@ class ProductController {
         try {
             const delPrd = await productModel.findByIdAndDelete(prdID);
             if (!delPrd) {
-                return res.status(404).json({ message: 'k tìm thấy sản phẩm' });
+                return res.status(400).json({ message: 'Product not found' });
             }
           
               // Trả về phản hồi cho client-side
               return res.json({
                 status: true,
-                message: "xóa thành công",
+                message: "Delete product successfully",
                 data: { }
             });
 

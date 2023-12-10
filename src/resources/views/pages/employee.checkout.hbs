@@ -1,55 +1,55 @@
-<h1>employee page</h1><br>
-
-<div>
-    <h2>xin chào <p id="name"></p></h2>
-</div> <br>
-
-<h2>thanh toán</h2> <br> <br>
 
 
-
-<div id="orderData">
-    <table>
-        <thead>
-            <th>ten</th>
-            <th>so luong</th>
-            <th>tong gia</th>
-        </thead>
-        <tbody>
-            {{#each productList}}
+<section id='body-section' class='bg-normal head-bold py-3'>
+    <div class="container">
+        <div class="row">
+            <table id="orderData" class="table table-striped table-hover mt-2 w-100" style="padding: 1.5rem;background-color: #fff3;">
+              <thead>
                 <tr>
-                    <td>{{productName}}</td>
-                    <td>{{quantity}}</td>
-                    <td>${{totalOne}}</td>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+              </tr>
+              </thead>
+              <tbody class="text-pri-color">
+                {{#each productList}}
+                <tr>
+                  <td>{{productName}}</td>
+                  <td>{{quantity}}</td>
+                  <td>
+                    {{formatCurrency totalOne}}
+                  </td>
                 </tr>
-            {{/each}}
-        </tbody>
-    </table>
-
-    <b>Tong: ${{totalAll}}</b>
-</div>
-
-
-<br> <br>
-<form class="customerInfo">
-    <label for="phone">nhập số điện thoại khách</label><br>
-    <input type="text" id="phone" name="phone" required>
-
-    <button type="submit">tìm</button>
-</form>
-
-
-<br> <br>
-<div>
-    <h3>thông tin khách hàng</h3>
-
-
-        <div id="addCus">
-  
+                {{/each}}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="2" class="text-right fs-2">Total</td>
+                  <td style=" font-size: 1.5em;font-weight: bold;">
+                    {{formatCurrency totalAll}}
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
         </div>
-
-    
-</div>
+        <div class="row">
+            <div class="col-5 col-lg-3">
+                <form class="customerInfo d-flex flex-column">
+                    <div class="form-group">
+                        <label for="phone">Customer Phone Number</label><br>
+                        <input type="text" id="phone" name="phone" class="form-control" required>
+                    </div>
+                    <button class="btn bg-btn" type="submit">Find</button>
+                </form>
+            </div>
+            <div class="col-7 offset-lg-1 col-lg-7">
+                <div id="addCus">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 
 
@@ -80,22 +80,25 @@
 
         if (!data.status) {
             addCustomer.innerHTML = `
-                <div id="addCus">
-                    <p>khong thay thong tin khach hang, tao khach hang moi</p> <br>
+                <h2 class="presstige-color">
+                        Not found customer
+                </h2>
+                <p>Please add new customer</p>
+                <form class="addCus">
+                    <div class="form-group">
+                    <label for="fullname">Fullname</label>
+                    <input type="text" id="fullname" class="form-control" name="fullname" required placeholder="Enter fullname">
+                    </div>
 
-                    <form class="addCus">
-                        <label for="fullname">ho ten khach</label><br>
-                        <input type="text" id="fullname" name="fullname" required> <br>
-
-                        <label for="address">dia chi</label><br>
-                        <input type="text" id="address" name="address" required> <br> <br>
-
-                        <button type="submit">them</button> 
-                    </form>
-                </div>
+                    <div class="form-group">
+                        <label for="address">Address</label><br>
+                        <input type="text" class="form-control" id="address" name="address" required placeholder="Enter address">
+                    </div>
+                    <button class="btn bg-btn" type="submit">Add</button> 
+                </form>
             `
             
-            document.querySelector(".addCus").addEventListener('submit', async e => {
+            document.querySelector("#addCus").addEventListener('submit', async e => {
                 e.preventDefault();
 
                 const fullname = document.querySelector("#fullname").value;
@@ -109,7 +112,7 @@
 
                 const dataa = await response.json();
                 if (dataa.status) {
-                    addCustomer.innerHTML = "Please enter phone number again";
+                    addCustomer.innerHTML = "<h1 class="presstige-color">Please enter phone number again</h2>";
                     await Swal.fire({
                         icon: 'success',
                         title: dataa.message,
@@ -123,11 +126,11 @@
             
 
             addCustomer.innerHTML = `
-                <table>
+                <table class="table table-striped table-hover mt-2 w-100" style="padding: 1.5rem;background-color: #fff3;">
                     <thead>
-                        <th>fullname</th>
-                        <th>address</th>
-                        <th>phone number</th>
+                        <th>Fulname</th>
+                        <th>Address</th>
+                        <th>Phone Number</th>
                         <th>Choose</th>
                     </thead>
                     <tbody>

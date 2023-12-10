@@ -1,4 +1,4 @@
-<section id='homepage-body' class='bg-normal'>
+{{! <section id='homepage-body' class='bg-normal'>
     <div class='container'>
         <h1 class="text-pri-color">employee page</h1>
         <div>
@@ -9,80 +9,103 @@
             </div>
         </div>
     </div>
-</section>
+</section> }}
 
+<div class='container'>
+  <h1 class='text-center'>Employee page</h1><br />
+  <div class='row'>
+    <div class='col-4'>
+      <img src='/images/avatar/empty.png' alt='' /><br/>
 
-
-<h1>employee page</h1><br>
-
-<div>
-    <h2>xin chào <p id="name"></p></h2>
-</div> <br>
-
-<button id="changeAvt">đổi avatar</button> 
-
-<img src="/images/avatar/empty.png" alt="">
-
-<br><br><br>
-
-<button class="" id="signoutBtn">đăng cmn xuất</button> <br> <br> 
-
-<p id="changePassMess"></p>
-<button id="changePass">đổi mật khẩu</button> <br>
-
-<br><br><br>
-
-<div id="feature">
-    <a href="/employee/customers">khách hàng</a> <br> 
-
-
-    <a href="/employee/stat">thống kê</a> <br>
-
-    <a href="/employee/order">đơn hàng</a> <br>
-
-
-
-    <h2>danh sách hàng hóa:</h2>
-
-
-    <table>
-        <thead>
-            <th>barcode</th>
-            <th>name</th>
-            <th>retail price</th>
-            <th>category</th>
-            <th>creation date</th>
+      <button class="btn mt-2" id='changeAvt'>Đổi avatar</button>
+    </div>
+    <div class='col-8'>
+      <table class='table'>
+        <thead class='thead-dark'>
+          <tr class="table-active">
+            <th>Account Information</th>
+            <th></th>
+          </tr>
         </thead>
         <tbody>
-            {{#each productList}}
-                <tr>
-                    <td><img src="{{barcodeImg}}" alt=""></td>
-                    <td>{{name}}</td>
-                    <td>${{retailPrice}}</td>
-                    <td>{{category}}</td>
-                    <td>{{creationDate}}</td>
-                </tr>
-            {{/each}}
+          <tr>
+            <th scope='row'>Full name</th>
+            <td>Mark</td>
+            {{!-- <td>Otto</td>
+            <td>@mdo</td> --}}
+          </tr>
+          <tr>
+            <th scope='row'>Email</th>
+            <td>Jacob</td>
+            {{!-- <td>Thornton</td>
+            <td>@fat</td> --}}
+          </tr>
         </tbody>
-    </table>
+      </table>
+    </div>
+  </div>
+</div>
 
+{{! <div>
+    <h2>xin chào <p id="name"></p></h2>
+</div> <br> }}
 
+{{! <button id="changeAvt">đổi avatar</button> 
 
+<img src="/images/avatar/empty.png" alt=""> }}
 
+<br /><br /><br />
 
-</div> <br>
+<button class='' id='signoutBtn'>đăng cmn xuất</button>
+<br />
+<br />
 
+<p id='changePassMess'></p>
+<button id='changePass'>đổi mật khẩu</button>
+<br />
+
+<br /><br /><br />
+
+<div id='feature'>
+  <a href='/employee/customers'>khách hàng</a>
+  <br />
+
+  <a href='/employee/stat'>thống kê</a>
+  <br />
+
+  <a href='/employee/order'>đơn hàng</a>
+  <br />
+
+  <h2>danh sách hàng hóa:</h2>
+
+  <table>
+    <thead>
+      <th>barcode</th>
+      <th>name</th>
+      <th>retail price</th>
+      <th>category</th>
+      <th>creation date</th>
+    </thead>
+    <tbody>
+      {{#each productList}}
+        <tr>
+          <td><img src='{{barcodeImg}}' alt='' /></td>
+          <td>{{name}}</td>
+          <td>${{retailPrice}}</td>
+          <td>{{category}}</td>
+          <td>{{creationDate}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+</div>
+<br />
 
 <script>
   // when website is loaded $(window).on('load', function () { setColorSVG('#footer', "#footer
-  $(window).on('load', function () {
-    setColorSVG('.pri-color', '#illustration object');
-    $(".close").click(()=>{
-      $(".alert").fadeOut();
-    })
-  });
+  $(window).on('load', function () { setColorSVG('.pri-color', '#illustration object');
+  $(".close").click(()=>{ $(".alert").fadeOut(); }) });
 </script>
 
-
-
-<script src="/js/employeePage.js"></script>
+<script src='/js/employeePage.js'></script>

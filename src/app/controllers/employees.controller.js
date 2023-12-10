@@ -30,6 +30,10 @@ class EmployeesController {
         res.render('pages/employee.customers.hbs', { ctmList: ctmList, navActive: 'customers' });
     }
 
+    account = async (req, res) => {
+        res.render('pages/account.hbs', { navActive: 'account', user: req.session.user });
+    }
+
     // [GET] /employee/stat
     viewStatistical = async (req, res) => {
         // get all orders created from 0:00:00 to 23:59:59 today
@@ -155,7 +159,7 @@ class EmployeesController {
 
     // [GET] /employee/p/update
     passUpdate = async (req, res) => {
-        res.render('pages/changePass.hbs');
+        res.render('pages/changePass.hbs', { navActive: 'account', username: req.session.user.username });
     }
 
     // [POST] /employee/set-password
@@ -179,12 +183,46 @@ class EmployeesController {
         res.render('pages/extrapage.hbs', { tk: token });
     }
     
+    changeAvatar = async (req, res) => {
+        console.log(req.file);
+        if (!req.file) {
+            return res.status(400).json({
+                status: false,
+                message: "No file is uploaded",
+                data: {}
+            });
+        }
+        let avatar = `/images/avatar/${req.file.filename}`;
+        let oldPath = req.session.user.avtImage;
+        if (!oldPath) {
+            // fs.unlinkSync(`./src/public${req.session.user.avatar}`);
+            await userModel.updateOne({ _id: req.session.user._id }, { avtImage: avatar }).then(() => {
+                req.session.user.avtImage = avatar;
+                return res.json({
+                    status: true,
+                    message: "Change avatar successfully",
+                    data: { }
+                });
+            })
+        } else {
+            // fs.unlinkSync(`./src/public${req.session.user.avatar}`);
+            await userModel.updateOne({ _id: req.session.user._id }, { avtImage: avatar }).then(() => {
+                req.session.user.avtImage = avatar;
+                return res.json({
+                    status: true,
+                    message: "Change avatar successfully",
+                    data: { }
+                });
+            })
+        }
+    }
 
 
     // [POST] /employee/p/update
     passC = async (req, res) => {
         try {
             const {username, oldPass, newPass, reNewPass} = req.body;
+            console.log(req.body);
             const userCheck = await userModel.findOne({ username: username });
             console.log(oldPass);
             console.log(userCheck.fullname);
@@ -199,28 +237,14 @@ class EmployeesController {
                 });
             }
 
-            else if (oldPass === newPass) {
-                return res.json({
-                    status: false,
-                    message: "pass cũ và mới phải khác nhau",
-                    data: {},
-                });
-            }
-
-            else if (newPass !== reNewPass) {
-                return res.json({
-                    status: false,
-                    message: "nhập lại pass đúng",
-                    data: {},
-                });
-            };
-
             const hashedPassword = await bcrypt.hash(newPass, 10);
             await userModel.updateOne({ username: username }, { password: hashedPassword }).then(() => {
                 userModel.updateOne({ username: username }, { isConfirmed: true}).then(() => {
+                    // logout
+                    req.session.destroy();
                     return res.json({
                         status: true,
-                        message: "đã đổi pass",
+                        message: "Change password successfully",
                         data: {},
                     });
                 })  

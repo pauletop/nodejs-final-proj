@@ -348,15 +348,15 @@ class AdminController {
 
     // [GET] /admin/p/update
     passUpdate = async (req, res) => {
-        res.render('pages/changePass.hbs', { isAdm: true });
+        res.render('pages/changePass.hbs', { isAdm: true, username: req.session.user.username  });
     }
 
     // [POST] /admin/p/update
     passC = async (req, res) => {
         try {
             const {username, oldPass, newPass, reNewPass} = req.body;
+            console.log(req.body);
             const userCheck = await userModel.findOne({ username: username });
-            console.log(oldPass);
 
             if (!(await bcrypt.compare(oldPass, userCheck.password))) {
                 return res.json({
@@ -384,12 +384,14 @@ class AdminController {
 
             const hashedPassword = await bcrypt.hash(newPass, 10);
             await userModel.updateOne({ username: username }, { password: hashedPassword }).then(() => {
+                // logout
+                req.session.destroy();
                 return res.json({
                     status: true,
                     message: "Change password successfully",
                     data: {},
                 });
-            })
+            });
 
         } catch (error) {
             console.log(error)

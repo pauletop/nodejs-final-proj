@@ -42,7 +42,7 @@
       {{#if isAdm}}
         <nav class="navbar navbar-expand-lg navbar-light -lighbgt">
           <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
               <span class="icon-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -149,10 +149,10 @@
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    Dropdown link
+                    Options
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item d-none" href="#">Action</a>
                     <a class="dropdown-item" href="#" id='changePass'>
                       <i class="bi bi-shield-lock"></i>
                       Change password
@@ -253,7 +253,7 @@
       {{else}}
         <nav class="navbar navbar-expand-lg navbar-light -lighbgt">
           <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
               <span class="icon-block">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -360,11 +360,11 @@
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    Dropdown link
+                    Options
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#" id='changePass'>
+                    <a class="dropdown-item" href="/employee/account">Account</a>
+                    <a class="dropdown-item" href="/employee/p/update" id='changePass'>
                       <i class="bi bi-shield-lock"></i>
                       Change password
                     </a>

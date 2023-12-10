@@ -1,4 +1,9 @@
 <link rel="stylesheet" href="./styles/form.css">
+<style>
+  .avt-img {
+    max-width: 60px;
+  }
+</style>
 
 <section id='body-section' class='head-bold'>
   <div class='container py-5'>
@@ -69,7 +74,15 @@
               {{#each employeeList}}
                 <tr>
                   <th scope="row">{{add @index 1}}</th>
-                  <td>{{avtImage}}</td>
+                  <td>
+                    <div class="d-flex justify-content-center align-items-center">
+                      {{#if (equals avtImage "")}}
+                        <img src="/images/avatar/empty.png" alt="" class="avt-img">
+                      {{else}}
+                        <img src="{{avtImage}}" alt="" class="avt-img">
+                      {{/if}}
+                    </div>
+                    </td>
                   <td><a href='/admin/stat/{{email}}'>{{fullname}}</a></td>
                   <td class="text-dot">{{email}}</td>
                   <td class="text-center">
@@ -104,15 +117,5 @@
     </div>
   </div>
 </section>
-
-<br /><br /><br />
-
-<a href='/admin/products'>quản lý sản phẩm</a>
-<br />
-
-<a href='/admin/customers'>khách hàng</a>
-<br />
-
-<a href='/admin/stat'>thống kê</a>
 
 <script src='/js/adminPage.js'></script>

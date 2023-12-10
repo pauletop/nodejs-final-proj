@@ -18,8 +18,18 @@
     margin-bottom: 15px;
     position: relative;
 }
-
-
+.res-row {
+  justify-content: center;
+  align-items: center;
+}
+/* @media screen and (max-width: 768px) {
+    .res-row {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+} */
 
 
 /* CSS */
@@ -47,8 +57,6 @@
   touch-action: manipulation;
   vertical-align: baseline;
   white-space: nowrap;
-  position: absolute;
-  left: 120px;
 }
 
 .button-8:hover,

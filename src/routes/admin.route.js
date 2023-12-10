@@ -97,7 +97,7 @@ router.get('/e', adminController.detailEmpl);
 router.get('/p/update', adminController.passUpdate);
 
 // [POST] /admin/p/update
-router.post('/p/update', adminController.passC);
+router.post('/p/update', upload.none(), adminController.passC);
 
 // [POST] /admin/l/employee
 router.post('/l/employee', adminController.lockEmpl)

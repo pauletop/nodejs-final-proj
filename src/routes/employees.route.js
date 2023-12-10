@@ -5,6 +5,42 @@ const employeesController = require('../app/controllers/employees.controller');
 const checkoutController = require('../app/controllers/checkout.controller');
 const orderController = require('../app/controllers/order.controller');
 
+// file upload config
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './src/public/images/avatar');
+    },
+    filename: function(req, file, cb) {
+        cb(null, `${req.session.user.email || "newImg"}.png`); // if the extension is not png, it will be converted to png
+    }
+});
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = ["image/png", "image/jpg", "image/jpeg"];
+    if (!allowedTypes.includes(file.mimetype)) {
+        const error = {
+            message: "Wrong file type"
+        }
+        return cb(error, false);
+    }
+    cb(null, true);
+};
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1000000 // 1 MB
+    },
+    fileFilter: fileFilter
+});
+const handleFileUploadError = (error, req, res, next) => {
+    if (error) {
+        res.status(400).json({
+            status: false,
+            message: error.message
+        });
+    }
+};
+
 // forbidden if req.session.user.role != "admin"
 const checkEmp = (req, res, next) => {
     if (req.path == "/set-password") {
@@ -28,6 +64,9 @@ router.get('/', employeesController.index);
 // [GET] /employee/customers
 router.get('/customers', employeesController.customers);
 
+// [GET] /employee/account
+router.get('/account', employeesController.account);
+
 // [GET] /employee/stat
 router.get('/stat', employeesController.viewStatistical);
 
@@ -40,9 +79,12 @@ router.post('/c', employeesController.checkNew);
 // [GET] /employee/p/update
 router.get('/p/update', employeesController.passUpdate);
 
+// [POST] /employee/changeAvatar
+router.post('/changeAvatar', upload.single("avatar"), handleFileUploadError, employeesController.changeAvatar);
+
 
 // [POST] /employee/p/update
-router.post('/p/update', employeesController.passC);
+router.post('/p/update', upload.none(), employeesController.passC);
 
 // [POST] /employee/set-password
 router.post('/set-password', employeesController.setPass);

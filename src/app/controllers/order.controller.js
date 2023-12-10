@@ -18,8 +18,7 @@ class OrderController {
     findPrd = async (req, res) => {
         const keyword = req.body.keyword;
         // console.log(keyword);
-
-        const products = await productModel.find({ name: { $regex: new RegExp(keyword, 'i') } });
+        const products = await productModel.find({ barcode: { $regex: new RegExp(keyword, 'i') } });
 
         if (products.length > 0) {
 
@@ -40,6 +39,7 @@ class OrderController {
 
     // [POST] /employee/order/create
     createOrder = async (req, res) => {
+        console.log(req.body);
         const { productsData, totalAll } = req.body;
         
         // console.log(productsData);
@@ -56,7 +56,7 @@ class OrderController {
 
             return res.json({
                 status: true,
-                message: "tao don hang thanh cong",
+                message: "Create order successfully",
                 data: { orderId },
             });
         } catch (error) {

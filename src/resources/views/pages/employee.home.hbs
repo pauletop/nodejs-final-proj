@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/styles/form2.css">
+
 <section id='homepage-body' class='bg-normal'>
     <div class='container'>
         <h1 class="text-pri-color">employee page</h1>
@@ -25,47 +27,79 @@
 
 <br><br><br>
 
-<button class="" id="signoutBtn">đăng cmn xuất</button> <br> <br> 
 
-<p id="changePassMess"></p>
-<button id="changePass">đổi mật khẩu</button> <br>
+<section id='body-section' class='bg-normal head-bold pb-3'>
+    <div class="container">
+        {{!-- List of product --}}
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <h2 class="text-center">
+                        List of <span class="pri-color">products</span>
+                    </h2>
+                    <p class="text-center text-sm">
+                        Click on the barcode to view barcode image
+                    </p>
+                    <div class="form-group search-spec">
+                        <label for="search"><i class="bi bi-search"></i></label>
+                        <input type="text" id="search" class="form-control" placeholder="Search by keyword">
+                    </div>
+                    <table class="table table-striped table-hover mt-2 w-100">
+                        <thead>
+                        <th scope="col">#</th>
+                        <th scope="col">
+                            Barcode
+                        </th>
+                        <th scope="col">
+                            Image
+                        </th>
+                        <th scope="col">
+                            Product Name
+                        </th>
+                        <th scope="col">
+                            Import Price
+                        </th>
+                        <th scope="col">
+                            Retail Price
+                        </th>
+                        <th scope="col">
+                            Category
+                        </th>
+                        <th scope="col">
+                            Creation Date
+                        </th>
+                        </thead>
+                        <tbody>
+                        {{#each productList}}
+                            <tr>
+                            <th scope="row">{{add @index 1}}</th>
+                            <td class="dot-dot" style="max-width: 100px;" title="{{barcode}}"><a data-src="{{barcodeImg}}" class="cursor-ptr see-barcode">
+                                    {{barcode}}
+                            </a></td>
+                            <td>
+                                {{#if (equals image "")}}
+                                {{else}}
+                                    <img src="{{image}}" alt="" class="img-fluid" style="max-width: 80px; max-height: 80px;">
+                                {{/if}}
 
-<br><br><br>
-
-<div id="feature">
-    <a href="/employee/customers">khách hàng</a> <br> 
-
-
-    <a href="/employee/stat">thống kê</a> <br>
-
-    <a href="/employee/order">đơn hàng</a> <br>
-
-
-
-    <h2>danh sách hàng hóa:</h2>
-
-
-    <table>
-        <thead>
-            <th>barcode</th>
-            <th>name</th>
-            <th>retail price</th>
-            <th>category</th>
-            <th>creation date</th>
-        </thead>
-        <tbody>
-            {{#each productList}}
-                <tr>
-                    <td><img src="{{barcodeImg}}" alt=""></td>
-                    <td>{{name}}</td>
-                    <td>${{retailPrice}}</td>
-                    <td>{{category}}</td>
-                    <td>{{creationDate}}</td>
-                </tr>
-            {{/each}}
-        </tbody>
-    </table>
-
+                            </td>
+                            <td>{{name}}</td>
+                            <td class="text-dot">{{formatCurrency importPrice}}</td>
+                            <td class="text-center">
+                                {{formatCurrency retailPrice}}
+                            </td>
+                            <td>{{category}}</td>
+                            <td>{{formatDate creationDate}}</td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {{!-- end of list of product --}}
+    </div>
+</section>
 
 
 

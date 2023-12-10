@@ -53,9 +53,8 @@ class AdminController {
             let emplObj = empl.toObject();
             return emplObj;
         });
-
-        console.log();
-        res.render('pages/admin.home.hbs', { employeeList: empls });
+        
+        res.render('pages/admin.home.hbs', { employeeList: empls, isAdm: true, navActive: 'home' });
     };
 
 
@@ -117,7 +116,7 @@ class AdminController {
         if (userCheck) {
             if (new Date().getTime() - userCheck.startTime <= 120000) {
                 userModel.updateOne({ email: userCheck.email }, { emailConfirmed: true }).then(() => {
-                    console.log('còn cứu');
+                    console.log('Email confirmed');
                     console.log(userCheck.emailConfirmed);
                 });
                 
@@ -139,12 +138,12 @@ class AdminController {
 
     // [GET] /admin/stat
     stat = async (req, res) => {
-        res.render('pages/admin.stat.hbs');
+        res.render('pages/admin.stat.hbs', { isAdm: true });
     }
 
     // [GET] /admin/p/update
     passUpdate = async (req, res) => {
-        res.render('pages/changePass.hbs');
+        res.render('pages/changePass.hbs', { isAdm: true });
     }
 
     // [POST] /admin/p/update
@@ -196,7 +195,7 @@ class AdminController {
 
     // [GET] /admin/e/:m
     detailEmpl = async (req, res) => {
-        const empl = await userModel.findOne({ email: req.query.m });
+        const empl = await userModel.findOne({ email: req.query.m, isAdm: true, navActive: 'home' });
         console.log(req.query.m);
         console.log(empl.fullname);
 

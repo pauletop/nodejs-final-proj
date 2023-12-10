@@ -35,7 +35,7 @@ class ProductController {
                 categories.push(prd.category);
             }
         });
-        res.render('pages/admin.products.hbs', { productList: prds, categories });
+        res.render('pages/admin.products.hbs', { productList: prds, categories, isAdm: true, navActive: 'products' });
     };
 
 

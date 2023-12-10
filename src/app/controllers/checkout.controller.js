@@ -34,7 +34,7 @@ class CheckoutController {
         if (!customerCheck) {
             return res.json({
                 status: false,
-                message: "k tim thay khach hang nay",
+                message: "Customer not found",
                 data: {},
             }); 
         } else {
@@ -56,18 +56,20 @@ class CheckoutController {
 
 
     addCus = async (req, res) => {
-        const { fullname, address, phoneNum } = req.body;
+        const { orId, fullname, address, phoneNum } = req.body;
         // console.log(req.body);
+        let orderCheck = await orderModel.findOne({ _id: orId });
         
-        customerModel.create({
+        let ctm = await customerModel.create({
             fullname: fullname,
             address: address,
             phoneNumber: phoneNum,
         });
+        orderModel.updateOne({ _id: orId }, { customerId: ctm._id });
 
         return res.json({
             status: true,
-            message: "them khach hang thanh cong",
+            message: "Add customer successfully",
             data: { fullname, address, phoneNum },
         });
 

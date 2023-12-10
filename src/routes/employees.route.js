@@ -42,7 +42,7 @@ router.post('/avt/update', employeesController.avtC)
 router.get('/checkout', checkoutController.index);
 router.post('/checkout', checkoutController.findCtm);
 router.post('/checkout/add', checkoutController.addCus);
-
+router.post('/checkout/choose', checkoutController.chooseCtm);
 
 
 

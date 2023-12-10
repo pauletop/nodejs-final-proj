@@ -193,6 +193,9 @@ or <br> <br>
         });
 
         const data = await response.json();
+        if (!data.status) {
+            return dialogAlert("Announcement",data.message);
+        }
 
         const { orderId } = data.data;
 

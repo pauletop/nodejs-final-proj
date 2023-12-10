@@ -85,6 +85,7 @@ class LoginController {
                     const fullname = userCheck.fullname;
                     const role = userCheck.role;
                     req.session.role = 'employee';
+                    req.session.user = userCheck;
                     return res.redirect('/employee');
                     // return res.json({
                     //     status: true,

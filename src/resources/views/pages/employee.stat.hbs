@@ -80,7 +80,7 @@
                                             <thead>
                                             <th scope="col">#</th>
                                             <th scope="col">
-                                                Customer name
+                                                Customer Info
                                             </th>
                                             <th scope="col">
                                                 Created at
@@ -96,7 +96,9 @@
                                             {{#each orderList}}
                                                 <tr>
                                                 <th scope="row">{{add @index 1}}</th>
-                                                <td>{{customer.fullname}}</td>
+                                                <td>{{customerName}}<br>
+                                                    {{customerPhone}}
+                                                </td>
                                                 <td class="text-dot">{{formatDate orderDate}}</td>
                                                 <td>
                                                     {{#each products}}
@@ -104,7 +106,7 @@
                                                     {{/each}}
                                                 </td>
                                                 <td class="text-center">
-                                                    {{totalAll}}
+                                                    {{formatCurrency totalAll}}
                                                 </td>
                                                 </tr>
                                             {{/each}}

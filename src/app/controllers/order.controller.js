@@ -39,17 +39,22 @@ class OrderController {
 
     // [POST] /employee/order/create
     createOrder = async (req, res) => {
-        console.log(req.body);
         const { productsData, totalAll } = req.body;
         
-        // console.log(productsData);
-
+        const salesperson = req.session.user;
+        if (!salesperson) {
+            return res.status(401).json({
+                status: false,
+                message: "You must login to use this feature",
+                data: { },
+            });
+        }
         const newOrder = new orderModel({
-            customerId: "",
+            customerId: null,
             products: productsData,
             totalAll: totalAll,
+            createdBy: salesperson._id,
         });
-
         try {
             await newOrder.save();
             const orderId = newOrder._id;

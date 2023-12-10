@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/styles/form2.css">
 
 
-<section id='body-section' class='bg-normal head-bold'>
+<section id='body-section' class='bg-normal head-bold pb-3'>
     <div class="container">
         <h2 class="teriary-color text-center" style="font-family: Montserrat, sans-serif;">
             Product Management
@@ -137,8 +137,10 @@
                         <div class="form-group col-4" style="margin-bottom: 0;">
                             <label for="product-category" class="col-form-label">Category:</label> <!-- id used -->
                             <select class="form-control" name="product-category" id="product-category" required>
-                                <option value="option1" th:selected="${categoryId == 1}">Option 1</option>
-                                <option value="option2">Option 2</option>
+                                {{!-- <option value="option1" th:selected="${categoryId == 1}">Option 1</option> --}}
+                                {{#each categories}}
+                                    <option value="{{.}}">{{.}}</option>
+                                {{/each}}
                             </select>
                             <div>
                                     <div class="input-checkbox" style="display: inline;"> <!-- id used -->
@@ -202,8 +204,9 @@
                         <div class="form-group col-4" style="margin-bottom: 0;">
                             <label for="product-category-e" class="col-form-label">Category:</label> <!-- id used -->
                             <select class="form-control" name="product-category" id="product-category-e" required>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
+                                {{#each categories}}
+                                    <option value="{{.}}">{{.}}</option>
+                                {{/each}}
                             </select>
                             <div>
                                     <div class="input-checkbox" style="display: inline;"> <!-- id used -->

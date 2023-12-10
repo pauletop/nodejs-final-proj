@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 class LoginController {
     // [GET] /login
     index = async (req, res) => {
-        res.render('pages/login.hbs');
+        res.render('pages/login.hbs', { sflash: req.flash('error') });
 
         // add root administrator (admin/admin)
         const adminCheck = await userModel.find({ username: 'admin' });
@@ -51,60 +51,56 @@ class LoginController {
     // [POST] /login
     check = async (req, res) => {
         try {
+            console.log(req.body);
             const {username, password} = req.body;
 
             console.log(req.body);
 
             const userCheck = await userModel.findOne({ username: username });
             if (!userCheck) {
-                console.log('sai username');
-                return res.json({
-                    status: false,
-                    message: "username sai",
-                    data: {},
-                });
+                req.flash('error', 'Incorrect username or password!');
+                return res.redirect('/login');
             };
 
             const isPasswordValid = await bcrypt.compare(password, userCheck.password);
             if (!isPasswordValid) {
-                console.log('sai pass');
-                return res.json({
-                    status: false,
-                    message: "Incorrect username or password!",
-                    data: {},
-                })
+                console.log('Incorrect password!');
+                req.flash('error', 'Incorrect username or password!');
+                return res.redirect('/login');
             };
 
             // role check
             if (userCheck.role === 'admin') {
-                console.log('dung la admin roi');
+                console.log('Welcome administator!!!');
                 const fullname = userCheck.fullname;
                 const role = userCheck.role;
-                return res.json({
-                    status: true,
-                    role: 'admin',
-                    data: {fullname, username, role}
-                })
+                req.session.role = 'admin';
+                return res.redirect('/admin');
             } else {
-                console.log('nhan vien quen');
+                console.log('Welcome employee!!!');
                 
                 // check if login with link in email
                 if (userCheck.emailConfirmed ) {
-                    console.log('ok employee');
+                    console.log('Email confirmed');
                     const fullname = userCheck.fullname;
                     const role = userCheck.role;
-                    return res.json({
-                        status: true,
-                        role: 'employee',
-                        data: {fullname, username, role}
-                    });
+                    req.session.role = 'employee';
+                    req.session.user = userCheck;
+                    return res.redirect('/employee');
+                    // return res.json({
+                    //     status: true,
+                    //     role: 'employee',
+                    //     data: {fullname, username, role}
+                    // });
 
                 } else {
-                    return res.json({
-                        status: false,
-                        message: "You have not confirmed your email yet!",
-                        data: {}
-                    })
+                    req.flash('error', 'You have not confirmed your email yet!');
+                    return res.redirect('/login');
+                    // return res.json({
+                    //     status: false,
+                    //     message: "You have not confirmed your email yet!",
+                    //     data: {}
+                    // })
                 }
             }
 

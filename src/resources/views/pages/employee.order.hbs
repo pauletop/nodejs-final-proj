@@ -12,7 +12,7 @@ tìm kiếm sản phẩm <br>
 
 or <br> <br>
 
-<button>quét barcode</button> <br> <br>
+{{!-- <button>quét barcode</button> <br> <br> --}}
 
 
 <div id="addItem">
@@ -193,6 +193,9 @@ or <br> <br>
         });
 
         const data = await response.json();
+        if (!data.status) {
+            return dialogAlert("Announcement",data.message);
+        }
 
         const { orderId } = data.data;
 

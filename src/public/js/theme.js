@@ -128,10 +128,4 @@ $(window).on('load', function () {
   $(".search-spec input").blur(function () {
       $(".search-spec").removeClass("focus");
   });
-  $(".search-spec input").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("table tbody tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1 || $(this).find('.hidden-btn').data("status").startsWith(value));
-    });
-  });
 });

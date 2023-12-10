@@ -63,6 +63,9 @@ $(document).ready(function() {
                         background: 'var(--text-primary-color)',
                         timer: 2000
                     });
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -190,25 +193,44 @@ $(document).ready(function() {
             return;
         }
         hideCustomDialog();
-        alert(prdID);
-    });
-});
-
-const delBtns = document.querySelectorAll(".deletePrd");
-for (let i = 0; i < delBtns.length; i++) {
-    let thisBtn = delBtns[i];
-    thisBtn.addEventListener('click', async e => {
-        const prdID = thisBtn.id;
-
+        let timer = 2000;
         const response = await fetch(`/admin/products/del/${prdID}`, {
             method: "delete",
             headers: { "Content-Type": "application/json" },
             body : JSON.stringify({prdID}),
         });
-
         const data = await response.json();
         if (data.status) {
-            window.location.reload();
+            Swal.fire({
+                icon: 'success',
+                title: '<span style="color: var(--bg-primary-color)">Delete product successfully</span>',
+                showConfirmButton: false,
+                showCloseButton: true,
+                background: 'var(--text-primary-color)',
+                timer: timer
+            });
+            setTimeout(() => {
+                window.location.reload();
+            }, timer);
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: '<span style="color: var(--danger-color)">Delete product failed</span>',
+                text: data.message,
+                showConfirmButton: false,
+                showCloseButton: true,
+                background: 'var(--text-primary-color)',
+                timer: 2000
+            });
         }
-    })
-}
+    });
+});
+
+$(window).on('load', function() {
+    $(".search-spec input").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("table tbody tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
+    });
+});

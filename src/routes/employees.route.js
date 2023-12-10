@@ -12,6 +12,11 @@ router.get('/', employeesController.index);
 // [POST] /employee
 // router.post('/', employeesController.check);
 
+// [GET] /employee/customers
+router.get('/customers', employeesController.customers);
+
+// [GET] /employee/stat
+router.get('/stat', employeesController.viewStatistical);
 
 // [POST] /employee/c
 router.post('/c', employeesController.checkNew);
@@ -37,7 +42,7 @@ router.post('/avt/update', employeesController.avtC)
 router.get('/checkout', checkoutController.index);
 router.post('/checkout', checkoutController.findCtm);
 router.post('/checkout/add', checkoutController.addCus);
-
+router.post('/checkout/choose', checkoutController.chooseCtm);
 
 
 

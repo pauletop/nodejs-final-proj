@@ -18,8 +18,7 @@ class OrderController {
     findPrd = async (req, res) => {
         const keyword = req.body.keyword;
         // console.log(keyword);
-
-        const products = await productModel.find({ name: { $regex: new RegExp(keyword, 'i') } });
+        const products = await productModel.find({ barcode: { $regex: new RegExp(keyword, 'i') } });
 
         if (products.length > 0) {
 
@@ -42,21 +41,27 @@ class OrderController {
     createOrder = async (req, res) => {
         const { productsData, totalAll } = req.body;
         
-        // console.log(productsData);
-
+        const salesperson = req.session.user;
+        if (!salesperson) {
+            return res.status(401).json({
+                status: false,
+                message: "You must login to use this feature",
+                data: { },
+            });
+        }
         const newOrder = new orderModel({
-            customerId: "",
+            customerId: null,
             products: productsData,
             totalAll: totalAll,
+            createdBy: salesperson._id,
         });
-
         try {
             await newOrder.save();
             const orderId = newOrder._id;
 
             return res.json({
                 status: true,
-                message: "tao don hang thanh cong",
+                message: "Create order successfully",
                 data: { orderId },
             });
         } catch (error) {

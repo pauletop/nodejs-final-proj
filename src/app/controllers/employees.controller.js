@@ -1,6 +1,8 @@
 const userModel = require("../models/users.model");
 const bcrypt = require('bcrypt');
 const productModel = require("../models/products.model");
+const customerModel = require("../models/customers.model");
+const orderModel = require("../models/orders.model");
 
 
 class EmployeesController {
@@ -19,19 +21,46 @@ class EmployeesController {
         
     }
 
+    // [GET] /customers
+    customers = async (req, res) => {
+        let customersList = await customerModel.find();
+        let ctmList = customersList.map(ctm => {
+            return ctm.toObject();;
+        });
+        res.render('pages/employee.customers.hbs', { ctmList: ctmList, navActive: 'customers' });
+    }
+
+    // [GET] /employee/stat
+    viewStatistical = async (req, res) => {
+        // get all orders created from 0:00:00 to 23:59:59 today
+        let orderList = await orderModel.find({ createdBy: req.session.user._id}).sort({ createdAt: -1 });
+        console.log(orderList);
+        console.log(new Date(new Date().setDate(new Date().getDate()-30)).setHours(0,0,0,0));
+        let orders = await Promise.all(orderList.map(async order => {
+            let ctm = await customerModel.findById(order.customerId);
+            console.log(ctm);
+            let ord = order.toObject();
+            if (ctm) {
+                ord.customerPhone = ctm.phoneNumber;
+                ord.customerName = ctm.fullname;
+            }
+            return ord;
+        }));
+        console.log(orders);
+        res.render('pages/employee.stat.hbs', { orderList: orders, navActive: 'stat' });
+    };
+
 
     // [POST] /employee/c
     checkNew = async (req, res) => {
         try {
             const data = req.body.username;
-            // console.log(data);
-            // console.log("kqnc");
 
             const userCheck = await userModel.findOne({ username: req.body.username });
             if (!userCheck.isConfirmed) {
                 return res.json({
                     status: false,
-                    message: "bạn là nhân viên mới, vui lòng đổi mật khẩu",
+                    message: "Your account has not been set up yet! Please set up your account before using it's features",
                     data: { }
                 }) 
             }
@@ -39,7 +68,7 @@ class EmployeesController {
             else if (userCheck.isLocked) {
                 return res.json({
                     status: false,
-                    message: "bạn đã bị admin khóa mõm",
+                    message: "Your account has been locked! If you have any questions, please contact the administrator",
                     data: { }
                 })  
             }

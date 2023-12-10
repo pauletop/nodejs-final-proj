@@ -34,11 +34,8 @@ class EmployeesController {
     viewStatistical = async (req, res) => {
         // get all orders created from 0:00:00 to 23:59:59 today
         let orderList = await orderModel.find({ createdBy: req.session.user._id}).sort({ createdAt: -1 });
-        console.log(orderList);
-        console.log(new Date(new Date().setDate(new Date().getDate()-30)).setHours(0,0,0,0));
         let orders = await Promise.all(orderList.map(async order => {
             let ctm = await customerModel.findById(order.customerId);
-            console.log(ctm);
             let ord = order.toObject();
             if (ctm) {
                 ord.customerPhone = ctm.phoneNumber;
@@ -46,8 +43,45 @@ class EmployeesController {
             }
             return ord;
         }));
+        let ordersToday = orders.filter(order => {
+            let date = new Date(order.orderDate);
+            let today = new Date();
+            return date.setHours(0,0,0,0) === today.setHours(0,0,0,0);
+        });
+        const sumaryOrders = (orders) => {
+            return orders.reduce((sumary, order) => {
+                    sumary.totalAmount += order.totalAll;
+                    sumary.numberOfOrders += 1;
+                    sumary.numberOfProducts += order.products.reduce((sum, product) => {
+                    return sum + product.quantity;
+                }, 0);
+                return sumary;
+            }, { totalAmount: 0, numberOfOrders: 0, numberOfProducts: 0 });
+        }
+        let ordersYesterday = orders.filter(order => {
+            let date = new Date(order.orderDate);
+            let yesterday = new Date(new Date().setDate(new Date().getDate()-1));
+            return date.setHours(0,0,0,0) === yesterday.setHours(0,0,0,0);
+        });
+        let ordersWithinLast7Days = orders.filter(order => {
+            let date = new Date(order.orderDate);
+            let today = new Date();
+            return date.setHours(0,0,0,0) >= new Date(new Date().setDate(new Date().getDate()-7)).setHours(0,0,0,0) && date.setHours(0,0,0,0) <= today.setHours(0,0,0,0);
+        });
+        let ordersThisMonth = orders.filter(order => {
+            let date = new Date(order.orderDate);
+            let thisMonth = new Date().getMonth();
+            return date.getMonth() === thisMonth;
+        });
+        // 3 fields: Total amount received, Number of orders, number of products sold
+        let sumaryToday = sumaryOrders(ordersToday);
+        let sumaryYesterday = sumaryOrders(ordersYesterday);
+        let sumaryWithinLast7Days = sumaryOrders(ordersWithinLast7Days);
+        let sumaryThisMonth = sumaryOrders(ordersThisMonth);
         console.log(orders);
-        res.render('pages/employee.stat.hbs', { orderList: orders, navActive: 'stat' });
+        res.render('pages/employee.stat.hbs', { orderList: orders, navActive: 'stat', 
+                        ordersToday, sumaryToday, ordersYesterday, sumaryYesterday, 
+                        ordersWithinLast7Days, sumaryWithinLast7Days, ordersThisMonth, sumaryThisMonth });
     };
 
 

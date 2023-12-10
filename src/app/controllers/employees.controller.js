@@ -32,10 +32,20 @@ class EmployeesController {
 
     // [GET] /employee/stat
     viewStatistical = async (req, res) => {
-        let orderList = await orderModel.find();
-        let orders = orderList.map(order => {
-            return order.toObject();;
-        });
+        // get all orders created from 0:00:00 to 23:59:59 today
+        let orderList = await orderModel.find({ createdBy: req.session.user._id}).sort({ createdAt: -1 });
+        console.log(orderList);
+        console.log(new Date(new Date().setDate(new Date().getDate()-30)).setHours(0,0,0,0));
+        let orders = await Promise.all(orderList.map(async order => {
+            let ctm = await customerModel.findById(order.customerId);
+            console.log(ctm);
+            let ord = order.toObject();
+            if (ctm) {
+                ord.customerPhone = ctm.phoneNumber;
+                ord.customerName = ctm.fullname;
+            }
+            return ord;
+        }));
         console.log(orders);
         res.render('pages/employee.stat.hbs', { orderList: orders, navActive: 'stat' });
     };

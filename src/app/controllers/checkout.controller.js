@@ -28,7 +28,7 @@ class CheckoutController {
 
         const customerCheck = await customerModel.findOne({ phoneNumber: phoneNum });
         
-
+        
         
         
         if (!customerCheck) {
@@ -39,20 +39,31 @@ class CheckoutController {
             }); 
         } else {
             const customerId = customerCheck.id;
-            const thisOrder = await orderModel.findOne({ customerId: customerId });
-            const productList = thisOrder.products;
-            console.log(thisOrder.products[0]);
-
             const fullname = customerCheck.fullname;
             const address = customerCheck.address;
 
             return res.json({
                 status: true,
-                message: "ok man",
-                data: { fullname, address, phoneNum, productList },
+                message: "",
+                data: { fullname, address, phoneNum, ctmId: customerId },
             });
         }
     };
+    chooseCtm = async (req, res) => {
+        const { ctmId, orId } = req.body;
+        // console.log(req.body);
+        let orderCheck = await orderModel.findOne({ _id: orId });
+        customerModel.findOne({ _id: ctmId }).then((customer) => {
+            console.log(customer);
+            orderCheck.customerId = customer;
+            orderCheck.save();
+        });
+        return res.json({
+            status: true,
+            message: "Choose customer successfully",
+            data: { orId },
+        });
+    }
 
 
     addCus = async (req, res) => {
@@ -66,11 +77,11 @@ class CheckoutController {
             phoneNumber: phoneNum,
         });
         orderModel.updateOne({ _id: orId }, { customerId: ctm._id });
-
+        let ctmId = ctm._id;
         return res.json({
             status: true,
             message: "Add customer successfully",
-            data: { fullname, address, phoneNum },
+            data: { fullname, address, phoneNum, ctmId },
         });
 
     }

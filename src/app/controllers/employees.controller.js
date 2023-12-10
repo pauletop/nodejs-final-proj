@@ -84,6 +84,37 @@ class EmployeesController {
                         ordersWithinLast7Days, sumaryWithinLast7Days, ordersThisMonth, sumaryThisMonth });
     };
 
+    // [POST] /employee/stat
+    chooseStatistical = async (req, res) => {
+        let { from, to } = req.body;
+        let orderList = await orderModel.find({ createdBy: req.session.user._id}).sort({ createdAt: -1 });
+        let orders = await Promise.all(orderList.map(async order => {
+            let ctm = await customerModel.findById(order.customerId);
+            let ord = order.toObject();
+            if (ctm) {
+                ord.customerPhone = ctm.phoneNumber;
+                ord.customerName = ctm.fullname;
+            }
+            return ord;
+        }));
+        let ordersInTime = orders.filter(order => {
+            let date = new Date(order.orderDate);
+            return date.setHours(0,0,0,0) >= new Date(from).setHours(0,0,0,0) && date.setHours(0,0,0,0) <= new Date(to).setHours(0,0,0,0);
+        });
+        const sumaryOrders = (orders) => {
+            return orders.reduce((sumary, order) => {
+                    sumary.totalAmount += order.totalAll;
+                    sumary.numberOfOrders += 1;
+                    sumary.numberOfProducts += order.products.reduce((sum, product) => {
+                    return sum + product.quantity;
+                }, 0);
+                return sumary;
+            }, { totalAmount: 0, numberOfOrders: 0, numberOfProducts: 0 });
+        }
+        let sumaryInTime = sumaryOrders(ordersInTime);
+        res.status(200).json({ ordersInTime, sumaryInTime });
+    };
+
 
     // [POST] /employee/c
     checkNew = async (req, res) => {

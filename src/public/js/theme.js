@@ -25,8 +25,11 @@ $(document).ready(function () {
   document.documentElement.setAttribute('data-theme', storedTheme);
   $('.' + icons[modes.indexOf(storedTheme)]).toggleClass('d-none');
 
-  document.querySelector('#signoutBtn').addEventListener('click', (e) => {
+  document.querySelector('#signoutBtn').addEventListener('click', async (e) => {
     localStorage.clear();
+    let res = await fetch('/login', {
+      method: 'DELETE',
+    });
     window.location.href = '/';
   });
 

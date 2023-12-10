@@ -5,6 +5,15 @@ const employeesController = require('../app/controllers/employees.controller');
 const checkoutController = require('../app/controllers/checkout.controller');
 const orderController = require('../app/controllers/order.controller');
 
+// forbidden if req.session.user.role != "admin"
+const checkEmp = (req, res, next) => {
+    if (!req.session.role) {
+        res.status(401).redirect('/login');
+    } else
+        next();
+}
+
+router.use(checkEmp);
 
 // [GET] /employee
 router.get('/', employeesController.index);
@@ -17,6 +26,9 @@ router.get('/customers', employeesController.customers);
 
 // [GET] /employee/stat
 router.get('/stat', employeesController.viewStatistical);
+
+// [POST] /employee/stat
+router.post('/stat', employeesController.chooseStatistical);
 
 // [POST] /employee/c
 router.post('/c', employeesController.checkNew);

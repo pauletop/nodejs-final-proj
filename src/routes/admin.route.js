@@ -39,6 +39,7 @@ const handleFileUploadError = (error, req, res, next) => {
 };
 // forbidden if req.session.user.role != "admin"
 const checkAdmin = (req, res, next) => {
+    console.log(req.session.role);
     if (!req.session.role) {
         res.status(401).redirect('/login');
     } else
@@ -74,6 +75,15 @@ router.post('/products', upload.single("imagePrd"), handleFileUploadError, produ
 
 // [GET] /admin/stat
 router.get('/stat', adminController.stat);
+
+// [POST] /admin/stat
+router.post('/stat', adminController.chooseStat);
+
+// [GET] /admin/stat/{email}
+router.get('/stat/:email', adminController.statEmpl);
+
+// [POST] /admin/stat/{email}
+router.post('/stat/:email', adminController.chooseStatEmpl);
 
 // [GET] /admin/e/:m
 router.get('/e', adminController.detailEmpl);

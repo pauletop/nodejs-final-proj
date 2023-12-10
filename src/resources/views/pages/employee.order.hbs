@@ -29,8 +29,8 @@
             </div>
         </form>
         <div class='order-name col-3 justify-content-around'>
-          <div style='font-weight: bold; font-size: 16px; margin-right: 10px'>Xin chào,
-            <span style='font-size: 20px;'>Cikenote</span></div>
+          <div style='font-weight: bold; font-size: 16px; margin-right: 10px'>Hello,
+            <span style='font-size: 20px;'>{{username}}</span></div>
         </div>
       </div>
       </div>
@@ -188,7 +188,7 @@
                   <td>${product.name}</td>
                   <td>${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(product.retailPrice)}</td>
                   <td>
-                    <input type="number" name="quantity" id="quantity_${product._id}" class="form-control limit-w">
+                    <input type="number" name="quantity" id="quantity_${product._id}" class="form-control limit-w" min="1" max="100" value="1">
                   </td>
                   <td><button class="btn border btn-secondary" style="font-size: 1em;"
                   onclick="addToCart('${product._id}', '${product.name}', '${product.retailPrice}')"

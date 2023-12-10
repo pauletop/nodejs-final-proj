@@ -10,7 +10,7 @@ class OrderController {
 
     // [GET] /employee/order
     index = async (req, res) => {
-        res.render('pages/employee.order.hbs');
+        res.render('pages/employee.order.hbs', { navActive: 'order', username: req.session.user.fullname });
     };
 
 
@@ -24,13 +24,13 @@ class OrderController {
 
             return res.json({
                 status: true,
-                message: "cac san pham",
+                message: "Product list",
                 data: { products },
             });
         } else {
             return res.json({
                 status: false,
-                message: "khong thay san pham",
+                message: "Product not found",
                 data: { },
             });
         }

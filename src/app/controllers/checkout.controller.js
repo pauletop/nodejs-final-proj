@@ -7,8 +7,22 @@ class CheckoutController {
     // [GET] /employee/checkout
     index = async (req, res) => {
         const orderId = req.query.id;
-        
+        console.log(orderId);
+        if (!orderId) {
+            return res.status(401).json({
+                status: false,
+                message: "You must login to use this feature",
+                data: { },
+            });
+        }
         const orderCheck = await orderModel.findOne({ _id: orderId });
+        if (!orderCheck) {
+            return res.status(401).json({
+                status: false,
+                message: "Order not found",
+                data: { },
+            });
+        }
         let orderCheckObj = orderCheck.toObject();
 
         // console.log(orderCheck);
@@ -17,7 +31,7 @@ class CheckoutController {
         const productList = orderCheck.products.toObject();
 
 
-        res.render('pages/employee.checkout.hbs', { productList: productList, totalAll: totalAll });
+        res.render('pages/employee.checkout.hbs', { productList: productList, totalAll: totalAll, navActive: 'order', username: req.session.user.fullname });
     };
 
 

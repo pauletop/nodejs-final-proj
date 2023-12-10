@@ -202,3 +202,222 @@ or <br> <br>
         window.location.href = `/employee/checkout?id=${orderId}`;
     }
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel='stylesheet' href='/styles/styleEmployee.css' />
+<h1 class='text-center'>Employee page</h1><br />
+
+<div class='order-label'>
+  <div class='order-name'>
+    <div style='font-weight: bold; font-size: 16px; margin-right: 10px'>Xin chào,
+      <span style='font-size: 20px;'>Cikenote</span></div>
+  </div>
+  <form id='findPrd' class='find-product'>
+    <input type='text' , placeholder='tìm sản phẩm' id='keyword' />
+    <div style='margin-left: 10px'><i class='bi bi-search'></i></div>
+  </form>
+</div>
+
+{{! or
+<br />
+<br /> }}
+
+{{! <button>quét barcode</button> <br> <br> }}
+
+<div id='addItem'>
+
+  {{! ak: $5 <br>
+    
+    so luong:
+    <input type="text" name="quantity" id=""quantity>
+    <button>them</button> <br> <br> }}
+</div>
+
+{{! <h2>Đơn hàng hiện tại</h2>
+<br />
+<br /> }}
+
+<div id='cart'>
+  <section id='body-section' class='bg-normal head-bold py-5'>
+    <div class='container'>
+      {{! List of product }}
+      <div class='row justify-content-center'>
+        <div class='col-12'>
+          <div>
+            <!-- Tabs navs -->
+
+            <!-- Tabs content -->
+            <div class='tab-content'>
+              <div class='tab-pane fade show active' id='today' role='tabpanel'>
+                <div class='container'>
+                  <!-- Table -->
+                  <div class='row justify-content-center'>
+                    <div class='col-12'>
+                      <div class='table-responsive'>
+                        <h2 class='text-center mb-4'>
+                          Orders
+                        </h2>
+                        <div class='col-5'>
+                          <p class='text-center text-sm text-bold'>
+                            Summary orders
+                          </p>
+                          <table class='table border'>
+                            <tr>
+                              <th>Number of products</th>
+                              <td>30</td>
+                            </tr>
+                            <tr>
+                              <th>Total</th>
+                              <td>1000000</td>
+                            </tr>
+                          </table>
+                        </div>
+                        {{! <div class='form-group search-spec'>
+                          <label for='search'><i class='bi bi-search'></i></label>
+                          <input
+                            type='text'
+                            id='search'
+                            class='form-control'
+                            placeholder='Search by keyword'
+                          />
+                        </div> }}
+                        <table class='table table-striped table-hover mt-2 w-100'>
+                          <thead>
+                            <th scope='col' class='text-center'>Id</th>
+                            <th scope='col' class='text-center'>
+                              Name product
+                            </th>
+                            <th scope='col' class='text-center'>
+                              N.o Products
+                            </th>
+                            <th scope='col' class='text-center'>
+                              Price
+                            </th>
+                            <th scope='col' class='text-center'>
+                              Total Price
+                            </th>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th scope='row' class='text-center'>1</th>
+                              <td class='text-center'>
+                                Thuốc yet
+                              </td>
+                              <td class='text-dot text-center'>1</td>
+                              <td class='text-center'>
+                                20000
+                              </td>
+                              <td class='text-center'>
+                                20000
+                              </td>
+                            </tr>
+                            <tr>
+                              <th scope='row' class='text-center'>1</th>
+                              <td class='text-center'>
+                                Thuốc yet
+                              </td>
+                              <td class='text-dot text-center'>1</td>
+                              <td class='text-center'>
+                                20000
+                              </td>
+                              <td class='text-center'>
+                                20000
+                              </td>
+                            </tr>
+                            <tr>
+                              <th scope='row' class='text-center'>1</th>
+                              <td class='text-center'>
+                                Thuốc yet
+                              </td>
+                              <td class='text-dot text-center'>1</td>
+                              <td class='text-center'>
+                                20000
+                              </td>
+                              <td class='text-center'>
+                                20000
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- end of Table -->
+                </div>
+              </div>
+            </div>
+            <!-- Tabs content -->
+          </div>
+        </div>
+      </div>
+      {{! end of list of product }}
+    </div>
+  </section>
+</div>
+<div class="total-product">Tong gio hang: $<p id='totalAll'></p></div>
+
+<br />
+<br />
+<h2>tới trang <button onclick='toCheckout()'>Checkout</button> </h2>
+
+<script>
+
+  document.querySelector("#findPrd").addEventListener("submit", async e => { e.preventDefault();
+  const keyword = document.querySelector("#keyword").value; const response = await
+  fetch('/employee/order/f', { method: "post", headers: { "Content-Type": "application/json" }, body
+  : JSON.stringify({ keyword }), }); const data = await response.json(); const { products } =
+  data.data; // console.log(products); let prdList = '<b>ket qua tim kiem:</b> <br>';
+  products.forEach(product => { // console.log(product.name); prdList += ` ${product.name}:
+  $${product.retailPrice} <br> so luong: <input type="number" name="quantity"
+  id="quantity_${product._id}"> <button onclick="addToCart('${product._id}', '${product.name}',
+  '${product.retailPrice}')">them</button> <br> <br> ` });
+  document.querySelector("#addItem").innerHTML = prdList; }); function addToCart(productId,
+  productName, retailPrice) { const quantityInput =
+  document.getElementById(`quantity_${productId}`).value; const quantity = parseInt(quantityInput,
+  10) || 1; const retailPriceNum = parseInt(retailPrice, 10); // console.log(quantity + 1) const
+  totalPriceOne = retailPriceNum * quantity; const shopCart = document.getElementById("cart"); const
+  existingCartItem = document.getElementById(`cartItem_${productId}`); if (!existingCartItem) {
+  const cartItem = document.createElement('div'); cartItem.id = `cartItem_${productId}`;
+  cartItem.className = "cartItem"; cartItem.innerHTML = ` <p id="name_${productId}">ten:
+  ${productName}</p> <p>so luong: <input type="number" id="quantity_${productId}_n"
+  value="${quantity}" onchange="updateTotalPrice('${productId}', ${retailPriceNum})"></p> <p>don
+  gia: $${retailPrice}</p> <p>tong: $<span class="totalPrice_${productId}"
+  id="totalOne">${totalPriceOne}</span></p> <button
+  onclick="deleteCartItem('${productId}')">xoa</button> <hr> <br> `; shopCart.appendChild(cartItem);
+  } else { // existed let cartOld = document.getElementById(`quantity_${productId}_n`); const
+  quantityOld = parseInt(cartOld.value, 10) || 1; let newQuantity = quantity + quantityOld; let
+  newTotalOne = newQuantity * retailPrice; cartOld.value = newQuantity;
+  document.querySelector(`.totalPrice_${productId}`).innerHTML = newTotalOne; } //
+  updateTotalPrice(); totalAll(); document.querySelector("#addItem").innerHTML = ''; } function
+  updateTotalPrice(productId, retailPrice) { const quantityInput =
+  document.getElementById(`quantity_${productId}_n`); if (quantityInput) { //
+  console.log(quantity.value); const quantity = parseInt(quantityInput.value, 10) || 1; const
+  totalPriceOne = retailPrice * quantity;
+  document.querySelector(`.totalPrice_${productId}`).innerHTML = `${totalPriceOne}` //
+  console.log(totalPrice); } totalAll(); } function deleteCartItem(productId) { const cartItem =
+  document.getElementById(`cartItem_${productId}`); if (cartItem) { cartItem.remove(); } totalAll();
+  } function totalAll() { const totalOnes = document.querySelectorAll("#totalOne"); let total = 0;
+  totalOnes.forEach(t => { const priceOne = parseInt(t.innerHTML, 10) || 1; total += priceOne; });
+  // console.log(total); document.querySelector("#totalAll").innerHTML = total; } async function
+  toCheckout() { const cartItems = document.querySelectorAll(".cartItem"); const productsData = [];
+  const totalAll = document.querySelector("#totalAll").innerHTML; cartItems.forEach(item => { const
+  productId = item.id.split("_")[1]; const productName =
+  document.querySelector(`#name_${productId}`).innerHTML.split(":")[1]; const quantity =
+  document.querySelector(`#quantity_${productId}_n`).value; const totalOne =
+  document.querySelector(`.totalPrice_${productId}`).innerHTML; productsData.push({ productId,
+  productName, quantity, totalOne }); }); // console.log(productsData); // console.log(totalAll);
+  const response = await fetch('/employee/order/create', { method: "post", headers: {
+  "Content-Type": "application/json" }, body : JSON.stringify({ productsData, totalAll }), }); const
+  data = await response.json(); if (!data.status) { return dialogAlert("Announcement",data.message);
+  } const { orderId } = data.data; window.location.href = `/employee/checkout?id=${orderId}`; }
+</script>

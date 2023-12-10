@@ -7,6 +7,10 @@ const orderController = require('../app/controllers/order.controller');
 
 // forbidden if req.session.user.role != "admin"
 const checkEmp = (req, res, next) => {
+    if (req.path == "/set-password") {
+        next();
+        return;
+    }
     if (!req.session.role) {
         res.status(401).redirect('/login');
     } else
@@ -40,7 +44,10 @@ router.get('/p/update', employeesController.passUpdate);
 // [POST] /employee/p/update
 router.post('/p/update', employeesController.passC);
 
-
+// [POST] /employee/set-password
+router.post('/set-password', employeesController.setPass);
+// [GET] /employee/set-password
+router.get('/set-password', employeesController.extra);
 
 
 // [GET] /employee/avt/update

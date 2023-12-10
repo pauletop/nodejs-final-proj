@@ -122,16 +122,14 @@ class AdminController {
                     console.log('Email confirmed');
                     console.log(userCheck.emailConfirmed);
                 });
-                
-                res.redirect('/login');
+                req.session.token = req.query.token;
             } else {
                 userModel.updateOne({ email: userCheck.email }, { emailConfirmed: false }).then(() => {
                     console.log(userCheck.emailConfirmed);
                 });
-                
-                res.render('pages/extrapage.hbs');
             }
         }
+        res.redirect('/employee/set-password');
     }
 
     // [GET] /admin/products

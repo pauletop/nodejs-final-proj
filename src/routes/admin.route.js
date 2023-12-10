@@ -39,6 +39,11 @@ const handleFileUploadError = (error, req, res, next) => {
 };
 // forbidden if req.session.user.role != "admin"
 const checkAdmin = (req, res, next) => {
+    // if path for set up account, then skip this middleware
+    if (req.path == "/extra/c") {
+        next();
+        return;
+    }
     console.log(req.session.role);
     if (!req.session.role) {
         res.status(401).redirect('/login');

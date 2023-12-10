@@ -158,6 +158,28 @@ class EmployeesController {
         res.render('pages/changePass.hbs');
     }
 
+    // [POST] /employee/set-password
+    setPass = async (req, res) => {
+        const { password, confirmPassword, tk } = req.body;
+        const userCheck = await userModel.findOne({ token: tk });
+        if (userCheck == null) {
+            return res.status(404);
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await userModel.updateOne({ _id: userCheck._id }, { password: hashedPassword }).then(() => {
+            userModel.updateOne({ _id: userCheck._id }, { isConfirmed: true}).catch(err => console.log(err));
+        });
+        return res.redirect('/login');
+    }
+
+    // [GET] /employee/set-password
+    extra = async (req, res) => {
+        const token = req.session.token;
+        req.session.token = null;
+        res.render('pages/extrapage.hbs', { tk: token });
+    }
+    
+
 
     // [POST] /employee/p/update
     passC = async (req, res) => {
@@ -172,7 +194,7 @@ class EmployeesController {
             if (!(await bcrypt.compare(oldPass, userCheck.password))) {
                 return res.json({
                     status: false,
-                    message: "sai pass cũ",
+                    message: "Incorrect password",
                     data: {},
                 });
             }

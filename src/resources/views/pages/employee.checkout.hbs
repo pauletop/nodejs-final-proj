@@ -121,7 +121,7 @@
 
                 const dataa = await response.json();
                 if (dataa.status) {
-                    addCustomer.innerHTML = "Please enter phone number again";
+                    addCustomer.innerHTML = `<h2 class="presstige-color">Please enter customer phone number again</h2>`
                     await Swal.fire({
                         icon: 'success',
                         title: dataa.message,
@@ -163,9 +163,7 @@
             document.querySelector("#pn").innerHTML = data.data.phoneNum;
             var ctmId = data.data.ctmId;
         }
-    });
-
-    $(".chooseCtm").click(async function() {
+        $(".chooseCtm").click(async function() {
                 const response = await fetch('/employee/checkout/choose', {
                     method: "post",
                     headers: { "Content-Type": "application/json" },
@@ -186,6 +184,7 @@
                     }, 1200);
                 }
         });
+    });
 
     
 

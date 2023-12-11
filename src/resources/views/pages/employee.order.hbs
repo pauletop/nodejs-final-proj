@@ -316,7 +316,7 @@
         
         cartItems.forEach(item => {
             const productId = item.id.split("_")[1];
-            const productName = document.querySelector(`#name_${productId}`).innerHTML;
+            const productName = document.querySelector(`#name_${productId}`).innerText.trim();
             const quantity = document.querySelector(`#quantity_${productId}_n`).value;
             const totalOne = document.querySelector(`#totalPrice_${productId}`).innerHTML;
 

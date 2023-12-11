@@ -104,6 +104,8 @@ router.get('/checkout', checkoutController.index);
 router.post('/checkout', checkoutController.findCtm);
 router.post('/checkout/add', checkoutController.addCus);
 router.post('/checkout/choose', checkoutController.chooseCtm);
+// [GET] /employee/checkout/bill-{id}
+router.get('/checkout/bill-:id', checkoutController.bill);
 
 
 
@@ -111,6 +113,7 @@ router.post('/checkout/choose', checkoutController.chooseCtm);
 router.get('/order', orderController.index);
 router.post('/order/f', orderController.findPrd);
 router.post('/order/create', orderController.createOrder);
+
 
 
 module.exports = router;

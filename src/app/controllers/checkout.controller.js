@@ -7,7 +7,6 @@ class CheckoutController {
     // [GET] /employee/checkout
     index = async (req, res) => {
         const orderId = req.query.id;
-        console.log(orderId);
         if (!orderId) {
             return res.status(401).json({
                 status: false,
@@ -25,7 +24,6 @@ class CheckoutController {
         }
         let orderCheckObj = orderCheck.toObject();
 
-        // console.log(orderCheck);
         const totalAll = orderCheckObj.totalAll;
 
         const productList = orderCheck.products.toObject();
@@ -38,7 +36,6 @@ class CheckoutController {
     // [POST] /employee/checkout
     findCtm = async (req, res) => {
         const phoneNum = req.body.phoneNum;
-        // console.log(phoneNum);
 
         const customerCheck = await customerModel.findOne({ phoneNumber: phoneNum });
         
@@ -65,10 +62,8 @@ class CheckoutController {
     };
     chooseCtm = async (req, res) => {
         const { ctmId, orId } = req.body;
-        // console.log(req.body);
         let orderCheck = await orderModel.findOne({ _id: orId });
         customerModel.findOne({ _id: ctmId }).then((customer) => {
-            console.log(customer);
             orderCheck.customerId = customer;
             orderCheck.save();
         });
@@ -79,10 +74,41 @@ class CheckoutController {
         });
     }
 
+    // [GET] /employee/checkout/bill-{id}
+    bill = async (req, res) => {
+        const orderId = req.params.id;
+        const orderCheck = await orderModel.findOne({ _id: orderId });
+        if (!orderCheck) {
+            return res.status(401).json({
+                status: false,
+                message: "Order not found",
+                data: { },
+            });
+        }
+        let orderCheckObj = orderCheck.toObject();
+        let ownerCtm = await customerModel.findOne({ _id: orderCheck.customerId });
+        let ctm = {};
+        if (ownerCtm) {
+            ctm.fullname = ownerCtm.fullname;
+            ctm.address = ownerCtm.address;
+            ctm.phoneNum = ownerCtm.phoneNumber;
+        } else {
+            ctm.fullname = "Anonymous Customer";
+            ctm.address = "Unknown";
+            ctm.phoneNum = "Unknown";
+        }
+        let staff = {};
+        staff.fullname = req.session.user.fullname;
+        staff.email = req.session.user.email;
+        const totalAll = orderCheckObj.totalAll;
+        const productList = orderCheck.products.toObject();
+        const orderDate = orderCheckObj.orderDate;
+        res.render('pages/employee.bill.hbs', { productList: productList, totalAll: totalAll, navActive: 'order', ctm, staff, orderDate });
+    }
+
 
     addCus = async (req, res) => {
         const { orId, fullname, address, phoneNum } = req.body;
-        // console.log(req.body);
         let orderCheck = await orderModel.findOne({ _id: orId });
         
         let ctm = await customerModel.create({

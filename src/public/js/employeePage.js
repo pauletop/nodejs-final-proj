@@ -18,7 +18,7 @@ $(window).on('load', function() {
     });
 });
 
-document.querySelector('#name').innerHTML =  localStorage.getItem("fullname");
+// document.querySelector('#name').innerHTML =  localStorage.getItem("fullname");
 
 document.querySelector('#signoutBtn').addEventListener('click', e => {
     localStorage.clear();

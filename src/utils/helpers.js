@@ -11,5 +11,13 @@ const helpers = {
     equals: (a, b) => {
       return a == b;
     },
+    // '012345689' => '01*****789'
+    formatPhone: (phone) => {
+      return phone.slice(0, 2) + '*****' + phone.slice(7);
+    },
+    // email breakable => email<wbr />@abc.com
+    breakableEmail: (email) => {
+      return email.replace('@', '<wbr />@');
+    },
 };
 module.exports = helpers;

@@ -15,9 +15,12 @@
                     <img src="{{user.avtImage}}" alt="" class="svgimage w-100">
                 </div>
             {{/if}}
-            <div>
-                <button class="button-8" id='changeAvt'>Change avatar</button>
-            </div>
+            {{#if viewOnly}}
+            {{else}}
+                <div>
+                    <button class="button-8" id='changeAvt'>Change avatar</button>
+                </div>
+            {{/if}}
         </div>
     </div> 
     <div class='col-md-8 col-12 mb-2'>

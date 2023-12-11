@@ -53,8 +53,6 @@ class LoginController {
         try {
             const {username, password} = req.body;
 
-            console.log(req.body);
-
             const userCheck = await userModel.findOne({ username: username });
             if (!userCheck) {
                 req.flash('error', 'Incorrect username or password!');
@@ -63,28 +61,37 @@ class LoginController {
 
             const isPasswordValid = await bcrypt.compare(password, userCheck.password);
             if (!isPasswordValid) {
-                console.log('Incorrect password!');
+                // console.log('Incorrect password!');
                 req.flash('error', 'Incorrect username or password!');
                 return res.redirect('/login');
             };
+            
+            if (userCheck.isLocked) {
+                req.flash('error', 'Your account has been locked! Please contact the administrator for more information.');
+                return res.redirect('/login');
+            }
 
+            // update isActive = true
+            await userModel.updateOne({ 
+                _id: userCheck._id
+             }, { isActive: true });
+            req.session.user = userCheck;
             // role check
             if (userCheck.role === 'admin') {
-                console.log('Welcome administator!!!');
-                const fullname = userCheck.fullname;
-                const role = userCheck.role;
+                // console.log('Welcome administator!!!');
+                // const fullname = userCheck.fullname;
+                // const role = userCheck.role;
                 req.session.role = 'admin';
                 return res.redirect('/admin');
             } else {
-                console.log('Welcome employee!!!');
+                // console.log('Welcome employee!!!');
                 
                 // check if login with link in email
                 if (userCheck.emailConfirmed ) {
-                    console.log('Email confirmed');
+                    // console.log('Email confirmed');
                     const fullname = userCheck.fullname;
                     const role = userCheck.role;
                     req.session.role = 'employee';
-                    req.session.user = userCheck;
                     return res.redirect('/employee');
                     // return res.json({
                     //     status: true,
@@ -109,7 +116,8 @@ class LoginController {
     }
 
     // [DELETE] /login
-    logout = (req, res) => {
+    logout = async (req, res) => {
+        await userModel.updateOne({ _id: req.session.user._id }, { isActive: false });
         req.session.destroy();
         res.status(204).json({
             status: true,

@@ -10,10 +10,9 @@ class UserController {
     try {
       const emailUser = req.params.email;
       const myUser = await userModel.find({ email: emailUser }).exec();
-      console.log(myUser);
       res.render('pages/user.hbs', { myUser: myUser[0] });
     } catch (error) {
-      res.send("khong tim thay user")
+      res.send("User not found");
     }
   }
 }

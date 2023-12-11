@@ -82,7 +82,6 @@ class EmployeesController {
         let sumaryYesterday = sumaryOrders(ordersYesterday);
         let sumaryWithinLast7Days = sumaryOrders(ordersWithinLast7Days);
         let sumaryThisMonth = sumaryOrders(ordersThisMonth);
-        console.log(orders);
         res.render('pages/employee.stat.hbs', { orderList: orders, navActive: 'stat', 
                         ordersToday, sumaryToday, ordersYesterday, sumaryYesterday, 
                         ordersWithinLast7Days, sumaryWithinLast7Days, ordersThisMonth, sumaryThisMonth });
@@ -184,7 +183,6 @@ class EmployeesController {
     }
     
     changeAvatar = async (req, res) => {
-        console.log(req.file);
         if (!req.file) {
             return res.status(400).json({
                 status: false,
@@ -222,12 +220,7 @@ class EmployeesController {
     passC = async (req, res) => {
         try {
             const {username, oldPass, newPass, reNewPass} = req.body;
-            console.log(req.body);
             const userCheck = await userModel.findOne({ username: username });
-            console.log(oldPass);
-            console.log(userCheck.fullname);
-            console.log(userCheck.id);
-
 
             if (!(await bcrypt.compare(oldPass, userCheck.password))) {
                 return res.json({
@@ -263,7 +256,6 @@ class EmployeesController {
 
     // [POST] /employee/avt/update
     avtC = async (req, res) => {
-        console.log("doi anh");
     }
 }
 

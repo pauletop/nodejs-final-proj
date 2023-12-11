@@ -152,8 +152,8 @@
                     Options
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item d-none" href="#">Action</a>
-                    <a class="dropdown-item" href="#" id='changePass'>
+                    <a class="dropdown-item" href="/admin/account">Account</a>
+                    <a class="dropdown-item" href="/admin/p/update" id='changePass'>
                       <i class="bi bi-shield-lock"></i>
                       Change password
                     </a>
@@ -340,7 +340,7 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
               <ul class="navbar-nav">
                 <li class="nav-item {{#if (equals navActive 'home')}}active{{/if}}">
-                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="/employee">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item {{#if (equals navActive 'order')}}active{{/if}}">
                   <a class="nav-link" href="/employee/order">Create Order</a>

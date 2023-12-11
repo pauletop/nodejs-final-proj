@@ -42,7 +42,6 @@ class ProductController {
     // [POST] /admin/products
     addPrd = async (req, res) => {
         const { pcode, pname, importPrice, retailPrice, category } = req.body;
-        console.log({ pcode, pname, importPrice, retailPrice, category });
         const newProduct = new productModel({
             barcode: '',
             name: pname,
@@ -81,12 +80,7 @@ class ProductController {
                     imgPath = `/images/pdThumbs/${barcode}.png`;
                 }
             }
-            if (imgPath == '') {
-                console.log("Không có file");
-            }
-            else {
-                console.log("Có file");
-            }
+
             const barcodeImgPath = `/images/barcode/${barcode}.png`;
 
             await productModel.updateOne({ _id: objectID }, { 
@@ -114,7 +108,6 @@ class ProductController {
 
     // [POST] /admin/products/e
     thisPrd = async (req, res) => {
-        console.log(req.body);
         const prdCheck = await productModel.findOne({ _id: req.body.prdID });
 
         const name = prdCheck.name;
@@ -140,8 +133,6 @@ class ProductController {
 
     // [POST] /admin/products/update
     postUpdate = async (req, res) => {
-        console.log(req.file);
-        console.log(req.body);
         const barcode = req.body.pcode;
 
         const newData = {
@@ -153,10 +144,10 @@ class ProductController {
         if (req.file) {
             newData.image = `/images/pdThumbs/${req.file.filename}`;
         }
-        console.log(newData);
-        await productModel.findOne({ _id: barcode }).then(async (prd) => {
-            console.log(prd);
-        });
+        
+        // await productModel.findOne({ _id: barcode }).then(async (prd) => {
+        //     console.log(prd);
+        // });
 
         await productModel.updateOne({ barcode: barcode}, newData).then(() => {
             return res.json({

@@ -12,6 +12,14 @@ const storage = multer.diskStorage({
         cb(null, `${req.body.pcode || "newImg"}.png`); // if the extension is not png, it will be converted to png
     }
 });
+const storageAvt = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './src/public/images/avatar');
+    },
+    filename: function(req, file, cb) {
+        cb(null, `${req.session.user.email || "newImg"}.png`); // if the extension is not png, it will be converted to png
+    }
+});
 const fileFilter = (req, file, cb) => {
     const allowedTypes = ["image/png", "image/jpg", "image/jpeg"];
     if (!allowedTypes.includes(file.mimetype)) {
@@ -24,6 +32,13 @@ const fileFilter = (req, file, cb) => {
 };
 const upload = multer({
     storage: storage,
+    limits: {
+        fileSize: 1000000 // 1 MB
+    },
+    fileFilter: fileFilter
+});
+const uploadAvt = multer({
+    storage: storageAvt,
     limits: {
         fileSize: 1000000 // 1 MB
     },
@@ -104,6 +119,14 @@ router.post('/l/employee', adminController.lockEmpl)
 
 // [POST] /admin/send/employee
 router.post('/send/employee', adminController.sendMail);
+
+// [GET] /admin/account
+router.get('/account', adminController.account);
+// [GET] /admin/account/:email
+router.get('/account/:email', adminController.detailAccount);
+
+// [POST] /admin/changeAvatar
+router.post('/changeAvatar', upload.single("avatar"), handleFileUploadError, adminController.changeAvatar);
 
 
 

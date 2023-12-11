@@ -11,7 +11,7 @@
       <div class="col-10 col-xl-4">
         <p>
           <span class="mb-0 fs-1">Welcome administator!</span>
-          <h2 class="teriary-color" id="name"></h2 class="teriary-color">
+          <h2 class="teriary-color" id="name">{{name}}</h2 class="teriary-color">
         </p>
         <h2 class="text-center mt-5">
             Add new <span class="pri-color">employee</span>
@@ -47,7 +47,8 @@
             List of <span class="pri-color">employees</span>
           </h2>
           <p class="text-center text-sm">
-            Click on the employee's name to view sales report
+            Click on the employee's name to view sales report, <br>
+            or click on the number to view account information
           </p>
           <div class="form-group search-spec">
             <label for="search"><i class="bi bi-search"></i></label>
@@ -73,7 +74,9 @@
             <tbody>
               {{#each employeeList}}
                 <tr>
-                  <th scope="row">{{add @index 1}}</th>
+                  <th scope="row">
+                    <a href="/admin/account/{{email}}">{{add @index 1}}</a>
+                  </th>
                   <td>
                     <div class="d-flex justify-content-center align-items-center">
                       {{#if (equals avtImage "")}}

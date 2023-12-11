@@ -57,7 +57,7 @@ class AdminController {
             return emplObj;
         });
         
-        res.render('pages/admin.home.hbs', { employeeList: empls, isAdm: true, navActive: 'home' });
+        res.render('pages/admin.home.hbs', { employeeList: empls, name: req.session.user.fullname, isAdm: true, navActive: 'home' });
     };
 
 
@@ -65,7 +65,6 @@ class AdminController {
     addEmpl = async (req, res) => {
         try {
             const {fullname, email} = req.body;
-            console.log(req.body);
 
             let username = email.split('@')[0];
             let password = email.split('@')[0];
@@ -117,9 +116,8 @@ class AdminController {
         const userCheck = await userModel.findOne({ token: req.query.token });
 
         if (userCheck) {
-            if (new Date().getTime() - userCheck.startTime <= 120000) {
+            if (new Date().getTime() - userCheck.startTime <= 60000) {
                 userModel.updateOne({ email: userCheck.email }, { emailConfirmed: true }).then(() => {
-                    console.log('Email confirmed');
                     console.log(userCheck.emailConfirmed);
                 });
                 req.session.token = req.query.token;
@@ -355,7 +353,6 @@ class AdminController {
     passC = async (req, res) => {
         try {
             const {username, oldPass, newPass, reNewPass} = req.body;
-            console.log(req.body);
             const userCheck = await userModel.findOne({ username: username });
 
             if (!(await bcrypt.compare(oldPass, userCheck.password))) {
@@ -403,8 +400,6 @@ class AdminController {
     // [GET] /admin/e/:m
     detailEmpl = async (req, res) => {
         const empl = await userModel.findOne({ email: req.query.m });
-        console.log(req.query.m);
-        console.log(empl.fullname);
 
         res.render('pages/detail.employee.hbs', { fullname: empl.fullname, isLocked: empl.isLocked, email: empl.email, isAdm: true, navActive: 'home'});
     }
@@ -412,7 +407,6 @@ class AdminController {
 
     // [POST] /admin/l/employee
     lockEmpl = async (req, res) => {
-        console.log(req.body);
         const userCheck = await userModel.findOne({ email: req.body.mail });
         if (!userCheck.isLocked) {
             await userModel.updateOne({ email: req.body.mail }, { isLocked: true }).then(() => {
@@ -462,8 +456,52 @@ class AdminController {
             });
         }        
     }
+
+    // [GET] /admin/account
+    account = async (req, res) => {
+        res.render('pages/account.hbs', { navActive: 'account', user: req.session.user });
+    }
+
+    // [GET] /admin/account/:email
+    detailAccount = async (req, res) => {
+        const user = await userModel.findOne({ email: req.params.email });
+        const userObj = user.toObject();
+        res.render('pages/account.hbs', { navActive: 'account', user: userObj, viewOnly: true });
+    }
         
-    
+    // [POST] /admin/changeAvatar
+    changeAvatar = async (req, res) => {
+        if (!req.file) {
+            return res.status(400).json({
+                status: false,
+                message: "No file is uploaded",
+                data: {}
+            });
+        }
+        let avatar = `/images/avatar/${req.file.filename}`;
+        let oldPath = req.session.user.avtImage;
+        if (!oldPath) {
+            // fs.unlinkSync(`./src/public${req.session.user.avatar}`);
+            await userModel.updateOne({ _id: req.session.user._id }, { avtImage: avatar }).then(() => {
+                req.session.user.avtImage = avatar;
+                return res.json({
+                    status: true,
+                    message: "Change avatar successfully",
+                    data: { }
+                });
+            })
+        } else {
+            // fs.unlinkSync(`./src/public${req.session.user.avatar}`);
+            await userModel.updateOne({ _id: req.session.user._id }, { avtImage: avatar }).then(() => {
+                req.session.user.avtImage = avatar;
+                return res.json({
+                    status: true,
+                    message: "Change avatar successfully",
+                    data: { }
+                });
+            })
+        }
+    }
 }
 
 module.exports = new AdminController();

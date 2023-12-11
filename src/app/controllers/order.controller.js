@@ -58,7 +58,20 @@ class OrderController {
         try {
             await newOrder.save();
             const orderId = newOrder._id;
-
+            for (const product of productsData) {
+                const { productId, productName } = product;
+                const productInDb = await productModel.findOne({ _id: productId });
+                if (!productInDb) {
+                    return res.status(400).json({
+                        status: false,
+                        message: `Product ${productName} not found`,
+                        data: { },
+                    });
+                } else {
+                    productInDb.beenPurchased = true;
+                    await productInDb.save();
+                }
+            }
             return res.json({
                 status: true,
                 message: "Create order successfully",

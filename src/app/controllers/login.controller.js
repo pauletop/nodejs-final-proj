@@ -5,6 +5,13 @@ const bcrypt = require('bcrypt');
 class LoginController {
     // [GET] /login
     index = async (req, res) => {
+        if (req.session.user) {
+            if (req.session.role === 'admin') {
+                return res.redirect('/admin');
+            } else {
+                return res.redirect('/employee');
+            }
+        }
         res.render('pages/login.hbs', { sflash: req.flash('error') });
 
         // add root administrator (admin/admin)
@@ -20,7 +27,7 @@ class LoginController {
                 avtImage: '',
 
                 isConfirmed: true,
-                isActive: true,
+                isActive: false,
                 isLocked: false,
                 
                 emailConfirmed: true,
@@ -29,15 +36,15 @@ class LoginController {
             });
 
             userModel.create({
-                fullname: 'Nguyen Hiep',
-                username: 'deptrai',
-                email: 'deptrai@gmail.com',
-                password: await bcrypt.hash('nguyenhiep', 10),
-                role: 'admin',
+                fullname: 'John Doe',
+                username: 'johndoe',
+                email: 'johndoe@email.com',
+                password: await bcrypt.hash('johndoe', 10),
+                role: 'employee',
                 avtImage: '',
 
                 isConfirmed: true,
-                isActive: true,
+                isActive: false,
                 isLocked: false,
                 
                 emailConfirmed: true,

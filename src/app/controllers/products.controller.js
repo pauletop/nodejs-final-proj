@@ -173,21 +173,29 @@ class ProductController {
 
         try {
             const prdObj = await productModel.findOne({ _id: prdID });
-            const delPrd = await productModel.findByIdAndDelete(prdID);
-            if (!delPrd) {
-                return res.status(400).json({ message: 'Product not found' });
+            if (prdObj.beenPurchased) {
+                return res.json({
+                    status: false,
+                    message: "Product has been purchased, cannot delete",
+                    data: { }
+                });
+            } else {
+                const delPrd = await productModel.findByIdAndDelete(prdID);
+                if (!delPrd) {
+                    return res.status(400).json({ message: 'Product not found' });
+                }
+                const srcPath = path.resolve(__dirname, '../../public'); // D:\University\NodeJS\Final-project\Node new\nodejs-finalproject\public
+                if (prdObj.image && prdObj.image != '') {
+                    fs.unlinkSync(srcPath + prdObj.image);
+                }
+                fs.unlinkSync(srcPath + prdObj.barcodeImg);
+                // Trả về phản hồi cho client-side
+                return res.json({
+                    status: true,
+                    message: "Delete product successfully",
+                    data: { }
+                });
             }
-            const srcPath = path.resolve(__dirname, '../../public'); // D:\University\NodeJS\Final-project\Node new\nodejs-finalproject\public
-            if (prdObj.image && prdObj.image != '') {
-                fs.unlinkSync(srcPath + prdObj.image);
-            }
-            fs.unlinkSync(srcPath + prdObj.barcodeImg);
-              // Trả về phản hồi cho client-side
-              return res.json({
-                status: true,
-                message: "Delete product successfully",
-                data: { }
-            });
 
         } catch (error) {
             console.error(error);

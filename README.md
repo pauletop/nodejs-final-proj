@@ -24,7 +24,10 @@ There are 2 types of users: `Admin` and `User`. <br>
 The default admin account is: <br>
 Username: `admin` <br>
 Password: `admin` <br>
-The default user account is not available. You can create a new user account by adding a new user in the admin page. [...] <br>
+The default user account is: <br>
+Username: `johndoe` <br>
+Password: `johndoe` <br>
+You can create a new user account by adding a new user in the admin page. [...] <br>
 ### 6. You can stop the server by pressing `Ctrl + C` and stop the MongoDB server by running the following command:
 ```
 docker-compose down

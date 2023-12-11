@@ -63,15 +63,32 @@ class CheckoutController {
     chooseCtm = async (req, res) => {
         const { ctmId, orId } = req.body;
         let orderCheck = await orderModel.findOne({ _id: orId });
-        customerModel.findOne({ _id: ctmId }).then((customer) => {
+        let customer = await customerModel.findOne({ _id: ctmId });
+        if (!customer) {
+            return res.json({
+                status: false,
+                message: "Customer not found",
+                data: {},
+            });
+        } else {
             orderCheck.customerId = customer;
             orderCheck.save();
-        });
-        return res.json({
-            status: true,
-            message: "Choose customer successfully",
-            data: { orId },
-        });
+            return res.json({
+                status: true,
+                message: "Choose customer successfully",
+                data: { orId, cmtName: customer.fullname },
+            });
+        }
+        // customerModel.findOne({ _id: ctmId }).then((customer) => {
+        //     orderCheck.customerId = customer;
+        //     orderCheck.save();
+        // });
+
+        // return res.json({
+        //     status: true,
+        //     message: "Choose customer successfully",
+        //     data: { orId, cmtName: customer.fullname },
+        // });
     }
 
     // [GET] /employee/checkout/bill-{id}

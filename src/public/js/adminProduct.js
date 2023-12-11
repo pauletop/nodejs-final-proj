@@ -126,13 +126,13 @@ $(document).ready(function() {
     });
     $("#submitEdit").click(e => {
         e.preventDefault();
-        $(this).find("input[type='submit']").trigger("click");
+        $("#submitEdit").closest(".modal-content").find("input[type='submit']").trigger("click");
     });
     $("#editPdForm").submit(function(e) {
         e.preventDefault();
         let formData = new FormData(this);
         var category;
-        if ($("#enter-category").is(":checked")) {
+        if ($("#enter-category-e").is(":checked")) {
             category = $("#new-category-name-e").val();
         } else {
             category = $("#product-category-e").val();

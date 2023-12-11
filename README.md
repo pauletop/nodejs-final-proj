@@ -31,8 +31,12 @@ docker-compose down
 ```
 For more information, please read the [requirements](https://docs.google.com/document/d/13biAcC49Pkg3FuyOmL-IW5c5hTNQRvzO) (in English).
 
+## Demo data
+We have provided some demo data for you to test the website, it's just a simple data for `products` collection. . You can find the demo data in the `data/products.js` file. Or you can simply click [here](./data/products.js).
 ## Presentation video
 This is the presentation video link of our project:
-[Drive]()
+[Drive](https://drive.google.com/drive/folders/1L_6lbX8y96PKw9lDCWOpZjE84qZcCmT7?usp=sharing)
+You can also find the link in the `readme.txt` file in the root directory of this project.
+Or click [here](./readme.txt).
 
 ## Thank you for reading. Have a nice day!

@@ -126,6 +126,7 @@ class AdminController {
                     console.log(userCheck.emailConfirmed);
                 });
             }
+            req.session.isValidate = true;
         }
         res.redirect('/employee/set-password');
     }
@@ -459,14 +460,14 @@ class AdminController {
 
     // [GET] /admin/account
     account = async (req, res) => {
-        res.render('pages/account.hbs', { navActive: 'account', user: req.session.user });
+        res.render('pages/account.hbs', { navActive: 'account', user: req.session.user, isAdm: true });
     }
 
     // [GET] /admin/account/:email
     detailAccount = async (req, res) => {
         const user = await userModel.findOne({ email: req.params.email });
         const userObj = user.toObject();
-        res.render('pages/account.hbs', { navActive: 'account', user: userObj, viewOnly: true });
+        res.render('pages/account.hbs', { navActive: 'account', user: userObj, viewOnly: true, isAdm: true });
     }
         
     // [POST] /admin/changeAvatar

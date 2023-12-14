@@ -177,9 +177,15 @@ class EmployeesController {
 
     // [GET] /employee/set-password
     extra = async (req, res) => {
-        const token = req.session.token;
-        req.session.token = null;
-        res.render('pages/extrapage.hbs', { tk: token });
+        if (req.session.isValidate) {
+            const token = req.session.token;
+            req.session.isValidate = null;
+            req.session.token = null;
+            res.render('pages/extrapage.hbs', { tk: token });
+        } else {
+            // error 404
+            res.status(404).redirect('/login');
+        }
     }
     
     changeAvatar = async (req, res) => {

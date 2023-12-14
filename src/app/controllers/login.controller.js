@@ -78,16 +78,16 @@ class LoginController {
                 return res.redirect('/login');
             }
 
-            // update isActive = true
-            await userModel.updateOne({ 
-                _id: userCheck._id
-             }, { isActive: true });
-            req.session.user = userCheck;
             // role check
             if (userCheck.role === 'admin') {
                 // console.log('Welcome administator!!!');
                 // const fullname = userCheck.fullname;
                 // const role = userCheck.role;
+                // update isActive = true
+                await userModel.updateOne({ 
+                    _id: userCheck._id
+                }, { isActive: true });
+                req.session.user = userCheck;
                 req.session.role = 'admin';
                 return res.redirect('/admin');
             } else {
@@ -98,6 +98,11 @@ class LoginController {
                     // console.log('Email confirmed');
                     const fullname = userCheck.fullname;
                     const role = userCheck.role;
+                    // update isActive = true
+                    await userModel.updateOne({ 
+                        _id: userCheck._id
+                    }, { isActive: true });
+                    req.session.user = userCheck;
                     req.session.role = 'employee';
                     return res.redirect('/employee');
                     // return res.json({
@@ -107,7 +112,7 @@ class LoginController {
                     // });
 
                 } else {
-                    req.flash('error', 'You have not confirmed your email yet!');
+                    req.flash('error', 'Please login by clicking on the link in your email!');
                     return res.redirect('/login');
                     // return res.json({
                     //     status: false,

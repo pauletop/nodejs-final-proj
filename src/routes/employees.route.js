@@ -113,6 +113,7 @@ router.get('/checkout/bill-:id', checkoutController.bill);
 router.get('/order', orderController.index);
 router.post('/order/f', orderController.findPrd);
 router.post('/order/create', orderController.createOrder);
+router.get('/customer/history/:phone', orderController.history);
 
 
 

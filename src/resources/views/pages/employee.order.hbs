@@ -270,7 +270,7 @@
             const quantity = parseInt(quantityInput.value, 10) || 1;
             const totalPriceOne = retailPrice * quantity;
 
-            document.querySelector(`.totalPrice_${productId}`).innerHTML = `${totalPriceOne}`
+            document.querySelector(`#totalPrice_${productId}`).innerHTML = `${totalPriceOne}`
             // console.log(totalPrice);
         }
         totalAll();

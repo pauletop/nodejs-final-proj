@@ -17,8 +17,10 @@ class OrderController {
     // [POST] /employee/order
     findPrd = async (req, res) => {
         const keyword = req.body.keyword;
-        // console.log(keyword);
-        const products = await productModel.find({ barcode: { $regex: new RegExp(keyword, 'i') } });
+        // console.log(keyword); // find product by barcode or name
+        const products1 = await productModel.find({ barcode: { $regex: new RegExp(keyword, 'i') } });
+        const products2 = await productModel.find({ name: { $regex: new RegExp(keyword, 'i') } });
+        const products = [...products1, ...products2];
 
         if (products.length > 0) {
 
@@ -80,6 +82,21 @@ class OrderController {
         } catch (error) {
             console.log(error);
         }
+    }
+    // [GET] /employee/customer/history/:phone
+    history = async (req, res) => {
+        const phone = req.params.phone;
+        const customer = await customerModel.findOne({ phoneNumber: phone });
+        if (!customer) {
+            return res.status(400).json({
+                // status: false,
+                message: "Customer not found",
+                // data: { },
+            });
+        }
+        const ordersH = await orderModel.find({ customerId: customer._id });
+        const orders = ordersH.map(order => order.toObject());
+        return res.render('pages/products.update.hbs', { navActive: 'customers', customer: customer.toObject(), orders });
     }
 }
 

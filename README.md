@@ -1,6 +1,6 @@
 # NodeJS FinalProject
 Welcome you to our project. This is a project for the final exam of NodeJS course. This project is mainly about a website for point of sale, which is used for selling products and managing orders. This project is built with NodeJS, ExpressJS, Docker (for MongoDB), and Bootstrap. We hope you will enjoy our project.
-For more information, please read the `report.docx` file in the root directory of this project. Note that this file is written in Vietnamese.
+For more information, please read the `report.docx` file in the root directory of this project. Note that this file is written in <b>Vietnamese</b>.
 
 ## Getting started
 Before you start, please make sure that you have installed NodeJS and Docker on your computer. If you haven't, please install them first.
@@ -17,8 +17,9 @@ npm install
 ```
 npm start
 ```
+When the message `Connect to DB successfully !!!` is shown, the server is ready to use.
 ### 5. Open your browser and go to [localhost:3000](http://localhost:3000) to see the website.
-The Welcome page will be shown. You can click on the `Get Started` button to go to the Login page. <br>
+The Welcome page will be shown. You can click on the `Get Started` button to go to the Login page. If you have already logged in, you will be redirected to the Home page depending on your role. <br>
 ![image](./demo_imgs/welcome_page.png)
 There are 2 types of users: `Admin` and `User`. <br>
 The default admin account is: <br>
